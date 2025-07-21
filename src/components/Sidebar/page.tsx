@@ -36,21 +36,21 @@ const navigationData = {
     { title: "Academics", url: "/academics", icon: BookOpen },
     { title: "Students", url: "/students", icon: Users },
     { title: "Calendar", url: "/calendar", icon: Calendar },
-  ],
-  academic: [
-    { title: "Courses", url: "/courses", icon: GraduationCap },
-    { title: "Assignments", url: "/assignments", icon: FileText },
-    { title: "Grades", url: "/grades", icon: Trophy },
-    { title: "Schedule", url: "/schedule", icon: Clock },
-  ],
-  communication: [
-    { title: "Messages", url: "/messages", icon: MessageSquare },
-    { title: "Announcements", url: "/announcements", icon: FileText },
-  ],
-  facilities: [
-    { title: "Campus Map", url: "/campus", icon: MapPin },
-    { title: "Settings", url: "/settings", icon: Settings },
-  ],
+  ]
+  // academic: [
+  //   { title: "Courses", url: "/courses", icon: GraduationCap },
+  //   { title: "Assignments", url: "/assignments", icon: FileText },
+  //   { title: "Grades", url: "/grades", icon: Trophy },
+  //   { title: "Schedule", url: "/schedule", icon: Clock },
+  // ],
+  // communication: [
+  //   { title: "Messages", url: "/messages", icon: MessageSquare },
+  //   { title: "Announcements", url: "/announcements", icon: FileText },
+  // ],
+  // facilities: [
+  //   { title: "Campus Map", url: "/campus", icon: MapPin },
+  //   { title: "Settings", url: "/settings", icon: Settings },
+  // ],
 }
 
 export function SchoolSidebar() {
@@ -93,7 +93,7 @@ export function SchoolSidebar() {
         <Separator className="mx-2 my-2" />
 
         {/* Academic */}
-        <SidebarGroup>
+        {/* <SidebarGroup>
           <SidebarGroupLabel>Academic</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -109,12 +109,12 @@ export function SchoolSidebar() {
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
-        </SidebarGroup>
+        </SidebarGroup> */}
 
         <Separator className="mx-2 my-2" />
 
         {/* Communication */}
-        <SidebarGroup>
+        {/* <SidebarGroup>
           <SidebarGroupLabel>Communication</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -130,12 +130,12 @@ export function SchoolSidebar() {
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
-        </SidebarGroup>
+        </SidebarGroup> */}
 
         <Separator className="mx-2 my-2" />
 
         {/* Facilities */}
-        <SidebarGroup>
+        {/* <SidebarGroup>
           <SidebarGroupLabel>Facilities</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -151,7 +151,7 @@ export function SchoolSidebar() {
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
-        </SidebarGroup>
+        </SidebarGroup> */}
       </SidebarContent>
 
       <SidebarFooter>
