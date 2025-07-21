@@ -60,7 +60,6 @@ export async function POST(req: Request) {
       new Date(details.expected_pickup_time)
     ]
 
-
     await pool.query(orderHeaderQuery, headerValues)
 
     // 2. Insert into order_line
@@ -68,12 +67,16 @@ export async function POST(req: Request) {
       item,
       subItem,
       details,
-      lineNo
+      lineNo,
+      parentLineNo = 0,
+      indent = 0
     }: {
       item: any,
       subItem: any,
       details: any,
-      lineNo: number
+      lineNo: number,
+      parentLineNo?: number,
+      indent?: number
     }) {
       const orderLineQuery = `
     INSERT INTO "OOMiddleware".order_line (
@@ -82,14 +85,14 @@ export async function POST(req: Request) {
       items_options_to_add_group_is_variant, item_instructions,
       cgst_rate, cgst_liability_on, cgst_amount, cgst_title,
       sgst_rate, sgst_liability_on, sgst_amount, sgst_title,
-      items_redeem_subscription_voucher_code
+      items_redeem_subscription_voucher_code,indent
     ) VALUES (
       $1, $2, $3, $4, $5, $6,
       $7, $8, $9, $10, 
       $11, $12,
       $13, $14, $15, $16,
       $17, $18, $19, $20,
-      $21
+      $21,$22
     )
   `;
 
@@ -99,12 +102,7 @@ export async function POST(req: Request) {
 
       const isMainItem = item === subItem;
 
-      const variant =
-        isMainItem
-          ? '0'
-          : subItem.group?.is_variant
-            ? '1'
-            : '0';
+      const variant = isMainItem ? '0' : (subItem.group?.is_variant ? '1' : '0');
 
       let discount = 0;
       if (isMainItem) {
@@ -118,15 +116,14 @@ export async function POST(req: Request) {
         }
       }
 
-
-      // const discount = item.options_to_add?.length > 0 ? subItem.discount || 0 : item.discount || 0;
       const total = item.options_to_add?.length > 0 ? subItem.price : item.total || 0;
-      const totalWithTax = item.options_to_add?.length > 0 ? (total || 0) + (subItem.total_tax || item.total_tax || 0) : item.total_with_tax || 0;
+      const totalWithTax = item.options_to_add?.length > 0
+        ? (total || 0) + (subItem.total_tax || item.total_tax || 0) : item.total_with_tax || 0;
 
       const orderLineValues = [
         details.id,
         lineNo,
-        0,
+        parentLineNo,
         subItem.merchant_id,
         subItem.title,
         subItem.quantity,
@@ -138,13 +135,14 @@ export async function POST(req: Request) {
         item.instructions || '',
         cgst.rate || 0,
         cgst.liability_on || '',
-        cgst.value || 0,
+        cgst.liability_on === "aggregator" ? 0 : cgst.value,
         cgst.title || '',
-        sgst.rate || 0,
+        sgst.rate,
         sgst.liability_on || '',
-        sgst.value || 0,
+        sgst.liability_on === "aggregator" ? 0 : sgst.value,
         sgst.title || '',
-        item.discount_code || ''
+        item.discount_code || '',
+        indent
       ];
 
       await pool.query(orderLineQuery, orderLineValues);
@@ -152,21 +150,57 @@ export async function POST(req: Request) {
 
 
     let lineNo = 1;
+    const itemIdToLineNo = new Map();
 
     for (const item of order.items) {
-      const shouldInsertItem = item.merchant_id !== "DUMMY";
+      const isDummyItem = item.merchant_id === "DUMMY";
+      let mainItemLineNo = 0;
 
-      // 1. Insert main item (only if not dummy)
-      if (shouldInsertItem) {
-        await insertOrderLine({ item, subItem: item, details, lineNo });
+      if (!isDummyItem) {
+        // Insert the actual item as main line
+        await insertOrderLine({
+          item,
+          subItem: item,
+          details,
+          lineNo,
+          parentLineNo: 0,
+          indent: 0,
+        });
+        itemIdToLineNo.set(item.id, lineNo);
+        mainItemLineNo = lineNo;
         lineNo++;
       }
 
-      // 2. Insert options_to_add if any
-      if (item.options_to_add && item.options_to_add.length > 0) {
-        for (const subItem of item.options_to_add) {
-          await insertOrderLine({ item, subItem, details, lineNo });
-          lineNo++;
+      if (item.options_to_add && item.options_to_add?.length > 0) {
+        let dummyBaseLineNo = 0;
+
+        for (const [index, subItem] of item.options_to_add.entries()) {
+          if (isDummyItem && index === 0) {
+            // First option under DUMMY item becomes main line
+            await insertOrderLine({
+              item,
+              subItem,
+              details,
+              lineNo,
+              parentLineNo: 0,
+              indent: 0,
+            });
+            dummyBaseLineNo = lineNo;
+            itemIdToLineNo.set(subItem.id, lineNo);
+            lineNo++;
+          } else {
+            // Options under DUMMY's first option or normal item
+            const parentLineNo = isDummyItem
+              ? dummyBaseLineNo
+              : itemIdToLineNo.get(item.id) || 0;
+            const indent = 1;
+
+            await insertOrderLine({
+              item, subItem, details, lineNo, parentLineNo, indent
+            });
+            itemIdToLineNo.set(subItem.id, lineNo);
+            lineNo++;
+          }
         }
       }
     }
