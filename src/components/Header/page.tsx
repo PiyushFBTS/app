@@ -31,13 +31,15 @@ export function SchoolHeader() {
       <div className="flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-4">
           <SidebarTrigger className="-ml-1" />
-          <div className="flex items-center gap-2">
-            <Image src="/logo.png" alt="logo" width={60} height={30} />
-            <div className="hidden sm:block">
-              <h1 className="font-semibold text-lg">Third Wave Coffee</h1>
-              <p className="text-xs text-muted-foreground">Excellence Since 1970s</p>
+          <Link href="/">
+            <div className="flex items-center gap-2 cursor-pointer">
+              <Image src="/logo.png" alt="logo" width={60} height={30} />
+              <div className="hidden sm:block">
+                <h1 className="font-semibold text-lg">Third Wave Coffee</h1>
+                <p className="text-xs text-muted-foreground">Excellence Since 1970s</p>
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
 
         <div className="flex items-center gap-2 md:gap-4">
@@ -64,7 +66,7 @@ export function SchoolHeader() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Link href={`/user/createUserr`} className="flex w-full">
+                  <Link href={`/user/createUser`} className="flex w-full">
                     <UserPlus className="mr-2 h-4 w-4" />
                     <span>Add User</span>
                   </Link>

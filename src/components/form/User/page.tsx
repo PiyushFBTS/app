@@ -51,8 +51,6 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
         try {
             axios.get("/api/common/getUserRole").then((rolesRes) => {
                 setRoles(rolesRes.data)
-                console.log("role",roles);
-                
                 setIsLoading(false)
             })
         } catch (error) {
@@ -121,14 +119,8 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
             }
 
             toast.success(isEditMode ? "User updated successfully!" : "User created successfully!")
-                router.push("/user")
+            router.push("/user")
 
-            // if (isEditMode) {
-                // router.push("/user")
-            // } else {
-                // form.reset()
-                // router.push(`/userRole/addUserRole/${responseData.user_code}`)
-            // }
         } catch (error) {
             console.error("Form submission error:", error)
             toast.error("Failed to save user")
@@ -157,21 +149,21 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
                                 control={form.control}
                                 name="role_code"
                                 render={({ field }) => (
-                                    <FormItem>
+                                    <FormItem className="w-full">
                                         <FormLabel>User Role</FormLabel>
                                         <Select
                                             onValueChange={(value) => {
-                                                const roleCode = Number.parseInt(value, 10)
-                                                field.onChange(roleCode)
-                                                const selectedRole = roles.find((r) => r.role_code === roleCode)
+                                                const roleCode = Number.parseInt(value, 10);
+                                                field.onChange(roleCode);
+                                                const selectedRole = roles.find((r) => r.role_code === roleCode);
                                                 if (selectedRole) {
-                                                    form.setValue("role_code", selectedRole.role_code)
+                                                    form.setValue("role_code", selectedRole.role_code);
                                                 }
                                             }}
                                             value={field.value ? field.value.toString() : ""}
                                         >
                                             <FormControl>
-                                                <SelectTrigger>
+                                                <SelectTrigger className="w-full">
                                                     <SelectValue placeholder="Select Role" />
                                                 </SelectTrigger>
                                             </FormControl>
