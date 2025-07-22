@@ -15,6 +15,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar"
 import Image from "next/image"
 import { LogOut, UserRoundPlus, UserPlus } from "lucide-react"
 import { signOut } from "next-auth/react"
+import Link from "next/link"
 
 export function SchoolHeader() {
   const handleLogout = async () => {
@@ -41,10 +42,10 @@ export function SchoolHeader() {
 
         <div className="flex items-center gap-2 md:gap-4">
           {/* Search - Hidden on mobile */}
-          <div className="relative hidden lg:block">
+          {/* <div className="relative hidden lg:block">
             <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input placeholder="Search..." className="w-64 pl-8" />
-          </div>
+          </div> */}
 
           {/* User Management - Hidden on mobile, shown on tablet+ */}
           <div className="hidden md:block">
@@ -57,22 +58,26 @@ export function SchoolHeader() {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuItem>
-                  <User className="mr-2 h-4 w-4" />
-                  <span>User Data</span>
+                  <Link href={`/user`} className="flex w-full">
+                    <User className="mr-2 h-4 w-4" />
+                    <span>User Data</span>
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <UserPlus className="mr-2 h-4 w-4" />
-                  <span>Add User</span>
+                  <Link href={`/user/createUserr`} className="flex w-full">
+                    <UserPlus className="mr-2 h-4 w-4" />
+                    <span>Add User</span>
+                  </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
 
           {/* Notifications - Compact on mobile */}
-          <Button variant="ghost" size="sm" className="relative">
+          {/* <Button variant="ghost" size="sm" className="relative">
             <Bell className="h-4 w-4" />
             <span className="sr-only">Notifications</span>
-          </Button>
+          </Button> */}
 
           {/* User Menu */}
           <DropdownMenu>
@@ -112,6 +117,6 @@ export function SchoolHeader() {
           </DropdownMenu>
         </div>
       </div>
-    </header>
+    </header >
   )
 }
