@@ -33,9 +33,9 @@ import { Separator } from "@/components/ui/separator"
 const navigationData = {
   main: [
     { title: "Dashboard", url: "/dashboard", icon: Home },
-    { title: "Academics", url: "/academics", icon: BookOpen },
-    { title: "Students", url: "/students", icon: Users },
-    { title: "Calendar", url: "/calendar", icon: Calendar },
+    // { title: "Academics", url: "/academics", icon: BookOpen },
+    // { title: "Students", url: "/students", icon: Users },
+    // { title: "Calendar", url: "/calendar", icon: Calendar },
   ]
   // academic: [
   //   { title: "Courses", url: "/courses", icon: GraduationCap },
@@ -51,6 +51,7 @@ const navigationData = {
   //   { title: "Campus Map", url: "/campus", icon: MapPin },
   //   { title: "Settings", url: "/settings", icon: Settings },
   // ],
+  
 }
 
 export function SchoolSidebar() {
