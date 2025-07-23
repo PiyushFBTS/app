@@ -37,7 +37,7 @@ export const columns: ColumnDef<UserData>[] = [
       return (
         <div className="text-left flex items-center space-x-2">
           <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} >
-            role_code
+            Role
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         </div>
@@ -45,7 +45,25 @@ export const columns: ColumnDef<UserData>[] = [
       )
     },
     cell: ({ row }) => {
-      return <div className="text-left pl-4">{row.original.role_code} </div>
+      const value = row.original.role_code === 1 ? "Super Admin" : "User"
+      return <div className="text-left pl-4">{value} </div>
+    }
+  },
+  {
+    accessorKey: "user_code",
+    header: ({ column }) => {
+      return (
+        <div className="text-left flex items-center space-x-2">
+          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} >
+            User Code
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+
+      )
+    },
+    cell: ({ row }) => {
+      return <div className="text-left pl-4">{row.original.user_code} </div>
     }
   },
   {
@@ -65,16 +83,9 @@ export const columns: ColumnDef<UserData>[] = [
   },
   {
     accessorKey: "first_name",
-    header: () => <div className="text-left">first_name</div>,
+    header: () => <div className="text-left">First Name</div>,
     cell: ({ row }) => {
       return <div className="text-left">{row.original.first_name} </div>
     }
-  },
-  {
-    accessorKey: "last_name",
-    header: () => <div className="text-left">last_name</div>,
-    cell: ({ row }) => {
-      return <div className="text-left">{row.original.last_name} </div>
-    }
-  },
+  }
 ]

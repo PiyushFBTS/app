@@ -3,21 +3,19 @@
 import { Bell, Search, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import Image from "next/image"
 import { LogOut, UserRoundPlus, UserPlus } from "lucide-react"
 import { signOut } from "next-auth/react"
 import Link from "next/link"
+import { useSelector } from "react-redux"
+import type { RootState } from "@/store"
 
 export function SchoolHeader() {
+  const user = useSelector((state: RootState) => state.user)
+
   const handleLogout = async () => {
     console.log("check -1")
     await signOut({
@@ -50,30 +48,33 @@ export function SchoolHeader() {
           </div> */}
 
           {/* User Management - Hidden on mobile, shown on tablet+ */}
-          <div className="hidden md:block">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="gap-2">
-                  <UserRoundPlus className="h-4 w-4" />
-                  <span className="hidden lg:inline">User</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuItem>
-                  <Link href={`/user`} className="flex w-full">
-                    <User className="mr-2 h-4 w-4" />
-                    <span>User Data</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href={`/user/createUser`} className="flex w-full">
-                    <UserPlus className="mr-2 h-4 w-4" />
-                    <span>Add User</span>
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+          {
+            user.user_code === 1 && <div className="hidden md:block">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="gap-2">
+                    <UserRoundPlus className="h-4 w-4" />
+                    <span className="hidden lg:inline">User</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuItem>
+                    <Link href={`/user`} className="flex w-full">
+                      <User className="mr-2 h-4 w-4" />
+                      <span>User Data</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link href={`/user/createUser`} className="flex w-full">
+                      <UserPlus className="mr-2 h-4 w-4" />
+                      <span>Add User</span>
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          }
+
 
           {/* Notifications - Compact on mobile */}
           {/* <Button variant="ghost" size="sm" className="relative">

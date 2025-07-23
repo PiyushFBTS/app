@@ -10,27 +10,30 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { userFormSchema, type UserFormValues } from "@/schema/user.schema"
-import type { Props, Role } from "@/types/user/user.type";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-// import { useSelector } from "react-redux";
-// import { RootState } from "@/store";
+import { createUserSchema, editUserSchema, type UserFormValues } from "@/schema/user.schema"
+import type { Props, Role } from "@/types/user/user.type"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
+import { useSelector } from "react-redux"
+import type { RootState } from "@/store"
+
 
 export default function UserForm({ initialData, isEditMode = false }: Props) {
     const [isLoading, setIsLoading] = useState(false)
-    //   const [companies, setCompanies] = useState<Company[]>([])
     const [roles, setRoles] = useState<Role[]>([])
     const [originalUserCode, setOriginalUserCode] = useState<number | undefined>()
     const router = useRouter()
-    //   const user = useSelector((state: RootState) => state.user);
+      const user = useSelector((state: RootState) => state.user)
+    // Use different schemas based on mode
+    const schema = isEditMode ? editUserSchema : createUserSchema
 
     // Initialize the form with react-hook-form and zod resolver
     const form = useForm<UserFormValues>({
-        resolver: zodResolver(userFormSchema),
+        resolver: zodResolver(schema),
         defaultValues: initialData
             ? {
                 ...initialData,
+                password: "",
             }
             : {
                 role_code: 0,
@@ -40,14 +43,12 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
                 first_name: "",
                 last_name: "",
 
-            }
-
+            },
     })
-
-
 
     // Load roles on component mount
     useEffect(() => {
+        setIsLoading(true)
         try {
             axios.get("/api/common/getUserRole").then((rolesRes) => {
                 setRoles(rolesRes.data)
@@ -68,20 +69,17 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
             form.reset({
                 ...initialData,
                 role_code: Number(initialData.role_code) || 0,
+                password: "",
             })
         }
     }, [initialData, form])
-
-    // Add this right before the onSubmit function
-    const handleFormSubmit = async (data: UserFormValues) => {
-        await onSubmit(data)
-    }
 
     // Add validation error logging
     useEffect(() => {
         const subscription = form.watch(() => {
             if (Object.keys(form.formState.errors).length > 0) {
-                console.log("Form validation errors:", form.formState.errors);
+                console.log("Form validation errors:", form.formState.errors)
+
             }
         });
 
@@ -95,7 +93,7 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
             // Prepare data for submission
             const submitData = {
                 ...data,
-                user_code: isEditMode ? originalUserCode : undefined,
+                user_code: isEditMode ? originalUserCode : data.user_code,
             }
 
             // Remove password field if empty in edit mode
@@ -141,9 +139,8 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
             </CardHeader>
             <CardContent>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-6">
-
-                        {/* Role and Username */}
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                        {/* Role and User Code */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <FormField
                                 control={form.control}
@@ -153,13 +150,10 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
                                         <FormLabel>User Role</FormLabel>
                                         <Select
                                             onValueChange={(value) => {
-                                                const roleCode = Number.parseInt(value, 10);
-                                                field.onChange(roleCode);
-                                                const selectedRole = roles.find((r) => r.role_code === roleCode);
-                                                if (selectedRole) {
-                                                    form.setValue("role_code", selectedRole.role_code);
-                                                }
+                                                const roleCode = Number.parseInt(value, 10)
+                                                field.onChange(roleCode)
                                             }}
+                                            disabled={user.role_code === 1 && !isEditMode}
                                             value={field.value ? field.value.toString() : ""}
                                         >
                                             <FormControl>
@@ -179,15 +173,26 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
                                     </FormItem>
                                 )}
                             />
-
                             <FormField
                                 control={form.control}
                                 name="user_code"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>User code</FormLabel>
+                                        <FormLabel>User Code</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Enter User Code" {...field} disabled={isEditMode} />
+                                            <Input
+                                                placeholder="Enter user code"
+                                                disabled={isEditMode}
+                                                className={isEditMode ? "bg-muted" : ""}
+                                                type="number"
+
+                                                {...field}
+                                                onChange={(e) => {
+                                                    const value = e.target.value
+                                                    field.onChange(value === "" ? 0 : Number(value))
+                                                }}
+                                                value={field.value || ""}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -195,7 +200,7 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
                             />
                         </div>
 
-                        {/* User name */}
+                        {/* Username and First Name */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <FormField
                                 control={form.control}
@@ -210,7 +215,6 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
                                     </FormItem>
                                 )}
                             />
-                            {/* First_name */}
                             <FormField
                                 control={form.control}
                                 name="first_name"
@@ -224,7 +228,10 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
                                     </FormItem>
                                 )}
                             />
-                            {/* Last Name */}
+                        </div>
+
+                        {/* Last Name and Password */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <FormField
                                 control={form.control}
                                 name="last_name"
@@ -238,39 +245,39 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
                                     </FormItem>
                                 )}
                             />
-
-                            {/* Password - only show for create mode */}
-                            {!isEditMode && (
-                                <FormField
-                                    control={form.control}
-                                    name="password"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Password</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="Enter password" type="password" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            )}
+                            {!isEditMode && <FormField
+                                control={form.control}
+                                name="password"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>
+                                            Password
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder={"Enter password"}
+                                                type="password"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />}
 
                         </div>
-                        <div>
-                            {isLoading && (
-                                <>
-                                    <p className="text-l text-red-600">Please Wait </p>
-                                    <p className="text-l text-red-600">UserRole permissions loading ...</p>
-                                </>
-                            )}
-                        </div>
+
+                        {isLoading && (
+                            <div>
+                                <p className="text-l text-green-500">Please Wait</p>
+                                <p className="text-l text-green-500">User add ...</p>
+                            </div>
+                        )}
 
                         <div className="flex justify-end space-x-4">
                             <Button variant="outline" asChild>
                                 <Link href="/user">Cancel</Link>
                             </Button>
-
                             <Button type="submit" disabled={isLoading}>
                                 {isLoading ? "Saving..." : isEditMode ? "Update User" : "Create User"}
                             </Button>

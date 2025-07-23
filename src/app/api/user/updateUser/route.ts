@@ -11,7 +11,7 @@ export async function PUT(req: Request) {
     const { role_code, user_code, user_name, first_name, last_name } = body
 
     const query = `
-      UPDATE posdb.users SET
+      UPDATE "OOMiddleware"."Users" SET
         role_code = $1,
         user_name = $2,
         first_name = $3,
@@ -26,7 +26,6 @@ export async function PUT(req: Request) {
       last_name,
       user_code
     ]
-    
     const result = await pool.query(query, values)
 
     if (result.rowCount === 0) {

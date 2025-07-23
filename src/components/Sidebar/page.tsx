@@ -58,10 +58,10 @@ export function SchoolSidebar() {
   return (
     <Sidebar collapsible="icon" className="border-r">
       <SidebarHeader>
-        <div className="flex items-center gap-2 px-2 py-2">
+        <div className="flex items-center gap-2  py-2">
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 rounded bg-blue-600 flex items-center justify-center">
-              <span className="text-white font-bold text-xs">TWC</span>
+              <span className="text-white font-bold text-[10px] p-1">TWC</span>
             </div>
             <div className="group-data-[collapsible=icon]:hidden">
               <span className="font-semibold text-sm">Third Wave Coffee</span>

@@ -10,7 +10,7 @@ import Link from "next/link"
 import { SquarePen } from "lucide-react"
 function Profile() {
     const user = useSelector((state: RootState) => state.user)
-
+    const role = user.role_code === 1 ? "Super Admin" : "User"
     return (
         <div className="max-w-md w-full mx-auto mt-6 px-4 sm:px-6 lg:px-8">
             <Card>
@@ -37,7 +37,7 @@ function Profile() {
                             </p>
                             <p>
                                 <span className="font-medium">Role Code:</span>{" "}
-                                {user.role_code}
+                                {role}
                             </p>
                         </div>
                         <div>
