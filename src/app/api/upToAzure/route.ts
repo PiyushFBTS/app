@@ -1,6 +1,8 @@
 // app/AzureToPOS/route.ts
 import { NextResponse } from 'next/server'
 import pool from '@/lib/db'
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 
 export async function POST(req: Request) {
   try {
@@ -30,6 +32,11 @@ export async function POST(req: Request) {
         $27
       )
     `
+    const discountItem = order.items.find((item: any) => item.discount_id && item.discount_code);
+
+    const order_discount_id = discountItem?.discount_id ?? '';
+    const order_discount_code = discountItem?.discount_code ?? '';
+      
     const headerValues = [
       details.id,
       details.channel,
@@ -50,15 +57,15 @@ export async function POST(req: Request) {
       details.payable_amount,
       order.store.name,
       order.store.merchant_ref_id,
-      '',
+      order.table_no || '',
       details.ext_platforms?.[0]?.id ?? null,
-      null,
-      null,
-      details.ext_platforms[0].extras.deliver_asap,
+      order_discount_id,
+      order_discount_code,
+      details.ext_platforms?.[0]?.extras?.deliver_asap || 0,
       details.ext_platforms?.[0]?.extras?.order_otp,
       customer.id,
-      new Date(details.expected_pickup_time)
-    ]
+      details.expected_pickup_time 
+    ];
 
     await pool.query(orderHeaderQuery, headerValues)
 
@@ -208,6 +215,9 @@ export async function POST(req: Request) {
 
 
     // 3. Insert into order_status
+
+    const session = await getServerSession(authOptions);
+    const currentUser = session?.user?.user_name || 'system';
     const orderStatusQuery = `
       INSERT INTO "OOMiddleware".order_status (
         additional_info_name, additional_info_order_id, message, new_state,
@@ -218,16 +228,16 @@ export async function POST(req: Request) {
       )
     `
     const statusValues = [
-      details.dash_extra_info,
+      details.dash_extra_info || "",
       details.id,
-      '',
+      details.instructions,
+      order.next_state,
+      details.id,
       details.order_state,
-      details.id,
-      null,
       order.store.id,
       new Date(details.updated),
-      'userName',
-      'userName'
+      currentUser,
+      currentUser,
     ]
     await pool.query(orderStatusQuery, statusValues)
 

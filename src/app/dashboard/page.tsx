@@ -15,19 +15,9 @@ function Dashboard() {
 
       {/* Display user information */}
       <div className="bg-card p-4 rounded-lg border">
-        <h2 className="text-xl font-semibold mb-2">User Information</h2>
         <div className="space-y-1">
           <p>
-            <strong>Name:</strong> {user.first_name} {user.last_name}
-          </p>
-          <p>
-            <strong>Username:</strong> {user.user_name}
-          </p>
-          <p>
-            <strong>User Code:</strong> {user.user_code}
-          </p>
-          <p>
-            <strong>Role Code:</strong> {user.role_code}
+            <strong> Hello ,</strong> {user.first_name} {user.last_name}
           </p>
         </div>
       </div>

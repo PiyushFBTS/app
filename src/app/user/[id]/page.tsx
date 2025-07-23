@@ -99,7 +99,7 @@ export default function UserDetail() {
       <div className="flex items-center justify-between ">
         <h1 className="text-3xl font-semibold text-gray-800">User Details</h1>
 
-        { (
+        {(
           <Button className="bg-black hover:bg-gray-800 text-white cursor-pointer">
             <Link href={`/user/createUser/${id}`}>
               Edit User
