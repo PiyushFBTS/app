@@ -102,7 +102,7 @@ export function SchoolHeader() {
                 </DropdownMenuItem>
               </Link>
               {/* Mobile-only items */}
-              <div className="md:hidden">
+              {/* <div className="md:hidden">
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <UserRoundPlus className="mr-2 h-4 w-4" />
@@ -112,7 +112,7 @@ export function SchoolHeader() {
                   <Search className="mr-2 h-4 w-4" />
                   <span>Search</span>
                 </DropdownMenuItem>
-              </div>
+              </div> */}
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />
