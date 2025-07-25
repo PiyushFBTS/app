@@ -4,17 +4,11 @@ export const userFormSchema = z.object({
   role_code: z.number().min(1, "Role Code is required"),
   user_code: z.number().min(1, "User Code is required"),
   user_name: z.string().min(1, "Username is required"),
-  password: z
-    .string()
-    .optional()
-    .refine(
-      (val) => {
-        return !val || val.length === 0 || val.length >= 5
-      },
-      {
-        message: "Password must be at least 5 characters",
-      },
-    ),
+  password: z.string().optional().refine(
+    (val) => {
+      return !val || val.length === 0 || val.length >= 5
+    },
+    { message: "Password must be at least 5 characters" }),
   first_name: z.string().min(1, "First name is required"),
   last_name: z.string().min(1, "Last Name is required"),
 })

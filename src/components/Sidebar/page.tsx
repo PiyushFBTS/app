@@ -36,22 +36,21 @@ const navigationData = {
     // { title: "Academics", url: "/academics", icon: BookOpen },
     // { title: "Students", url: "/students", icon: Users },
     // { title: "Calendar", url: "/calendar", icon: Calendar },
-  ]
+  ],
   // academic: [
   //   { title: "Courses", url: "/courses", icon: GraduationCap },
   //   { title: "Assignments", url: "/assignments", icon: FileText },
   //   { title: "Grades", url: "/grades", icon: Trophy },
   //   { title: "Schedule", url: "/schedule", icon: Clock },
   // ],
-  // communication: [
-  //   { title: "Messages", url: "/messages", icon: MessageSquare },
-  //   { title: "Announcements", url: "/announcements", icon: FileText },
-  // ],
+  communication: [
+    { title: "Report 1", url: "/messages", icon: MessageSquare },
+    { title: "Report 2", url: "/announcements", icon: FileText },
+  ],
   // facilities: [
   //   { title: "Campus Map", url: "/campus", icon: MapPin },
   //   { title: "Settings", url: "/settings", icon: Settings },
   // ],
-  
 }
 
 export function SchoolSidebar() {
@@ -115,8 +114,8 @@ export function SchoolSidebar() {
         <Separator className="mx-2 my-2" />
 
         {/* Communication */}
-        {/* <SidebarGroup>
-          <SidebarGroupLabel>Communication</SidebarGroupLabel>
+        <SidebarGroup>
+          <SidebarGroupLabel>Report</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {navigationData.communication.map((item) => (
@@ -131,7 +130,7 @@ export function SchoolSidebar() {
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
-        </SidebarGroup> */}
+        </SidebarGroup>
 
         <Separator className="mx-2 my-2" />
 

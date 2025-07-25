@@ -36,7 +36,6 @@ export async function POST(req: Request) {
 
     const order_discount_id = discountItem?.discount_id ?? '';
     const order_discount_code = discountItem?.discount_code ?? '';
-      
     const headerValues = [
       details.id,
       details.channel,
@@ -64,7 +63,7 @@ export async function POST(req: Request) {
       details.ext_platforms?.[0]?.extras?.deliver_asap || 0,
       details.ext_platforms?.[0]?.extras?.order_otp,
       customer.id,
-      details.expected_pickup_time 
+      details.expected_pickup_time ? new Date(details.expected_pickup_time) : null
     ];
 
     await pool.query(orderHeaderQuery, headerValues)
@@ -231,9 +230,9 @@ export async function POST(req: Request) {
       details.dash_extra_info || "",
       details.id,
       details.instructions,
-      order.next_state,
-      details.id,
       details.order_state,
+      details.id,
+      null,
       order.store.id,
       new Date(details.updated),
       currentUser,

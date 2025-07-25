@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import pool from '@/lib/db'
-
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 export async function POST(req: Request) {
   try {
     const body = await req.json()
@@ -43,7 +44,7 @@ export async function POST(req: Request) {
       details.discount,
       details.delivery_datetime ? new Date(details.delivery_datetime) : null,
       details.order_state,
-      details.instructions,
+      details.instructions || "",
       details.total_charges,
       new Date(details.created),
       details.order_subtotal,
@@ -54,8 +55,8 @@ export async function POST(req: Request) {
       details.ext_platforms?.[0]?.id ?? null,
       details.discount_id,
       details.discount_code,
-      false,
-      null,
+      details.ext_platforms?.[0]?.extras?.deliver_asap || false,
+      details.ext_platforms?.[0]?.extras?.order_otp || "",
       customer.app_user_id,
       new Date(details.expected_pickup_time)
     ]
@@ -63,55 +64,131 @@ export async function POST(req: Request) {
     await pool.query(orderHeaderQuery, headerValues)
 
     // Insert into order_line
-    let lineNo = 1
+    let lineNo = 1;
+    const itemIdToLineNo = new Map();
+
     for (const item of order.items) {
-      const orderLineQuery = `
+      const isDummyItem = item.merchant_id === "DUMMY";
+      let dummyBaseLineNo = 0;
+
+      if (!isDummyItem) {
+        // Non-dummy item — insert main item line
+
+        const orderLineQuery = `
         INSERT INTO "OOMiddleware".order_line (
           order_id, line_no, parent_line_no, item_merchant_id, item_name, item_quantity,
           item_price, item_discount, item_total, item_total_with_tax,
           items_options_to_add_group_is_variant, item_instructions,
           cgst_rate, cgst_liability_on, cgst_amount, cgst_title,
           sgst_rate, sgst_liability_on, sgst_amount, sgst_title,
-          items_redeem_subscription_voucher_code
+          items_redeem_subscription_voucher_code, indent
         ) VALUES (
           $1, $2, $3, $4, $5, $6,
           $7, $8, $9, $10,
           $11, $12,
           $13, $14, $15, $16,
           $17, $18, $19, $20,
-          $21
+          $21, $22
         )
       `
-      const taxes = item.taxes || []
-      const cgst = taxes.find((t:any) => t.title === 'CGST') || {}
-      const sgst = taxes.find((t:any) => t.title === 'SGST') || {}
+        const cgst = item.taxes?.find((t: any) => t.title === 'CGST') || {};
+        const sgst = item.taxes?.find((t: any) => t.title === 'SGST') || {};
+        const TotalWIthTax = item.total + cgst.value + sgst.value || 0
 
-      const orderLineValues = [
-        details.id,
-        lineNo,
-        0,
-        item.merchant_id,
-        item.title,
-        item.quantity,
-        item.price,
-        item.discount,
-        item.total,
-        item.total_with_tax,
-        '0',
-        item.instructions,
-        cgst.rate || 0,
-        cgst.liability_on || '',
-        cgst.value || 0,
-        cgst.title || '',
-        sgst.rate || 0,
-        sgst.liability_on || '',
-        sgst.value || 0,
-        sgst.title || '',
-        item.discount_code || ''
-      ]
-      await pool.query(orderLineQuery, orderLineValues)
-      lineNo++
+        const orderLineValues = [
+          details.id,
+          lineNo,
+          0, // parent_line_no
+          item.merchant_id,
+          item.title || 'Untitled Item',
+          item.quantity || 1,
+          item.price || 0,
+          item.discount || 0,
+          item.total || 0,
+          TotalWIthTax || 0,
+          '0', // is_variant
+          item.instructions || '',
+          cgst.rate || 0,
+          cgst.liability_on || '',
+          cgst.value || 0,
+          cgst.title || '',
+          sgst.rate || 0,
+          sgst.liability_on || '',
+          sgst.value || 0,
+          sgst.title || '',
+          item.discount_code || '',
+          0 // indent
+        ];
+
+        await pool.query(orderLineQuery, orderLineValues);
+        itemIdToLineNo.set(item.id, lineNo);
+        lineNo++;
+      }
+
+      // Handle options_to_add (sub items)
+      for (const [index, option] of (item.options_to_add || []).entries()) {
+        const cgst = option.taxes?.find((t: any) => t.title === 'CGST') || {};
+        const sgst = option.taxes?.find((t: any) => t.title === 'SGST') || {};
+
+        const isFirstUnderDummy = isDummyItem && index === 0;
+        const parentLineNo = isFirstUnderDummy ? 0 : isDummyItem ? dummyBaseLineNo : itemIdToLineNo.get(item.id) || 0;
+
+        const indent = isFirstUnderDummy ? 0 : 1;
+
+        const orderLineQuery = `
+      INSERT INTO "OOMiddleware".order_line (
+        order_id, line_no, parent_line_no, item_merchant_id, item_name, item_quantity,
+        item_price, item_discount, item_total, item_total_with_tax,
+        items_options_to_add_group_is_variant, item_instructions,
+        cgst_rate, cgst_liability_on, cgst_amount, cgst_title,
+        sgst_rate, sgst_liability_on, sgst_amount, sgst_title,
+        items_redeem_subscription_voucher_code, indent
+      ) VALUES (
+        $1, $2, $3, $4, $5, $6,
+        $7, $8, $9, $10,
+        $11, $12,
+        $13, $14, $15, $16,
+        $17, $18, $19, $20,
+        $21, $22
+      )
+    `;
+
+        const orderLineValues = [
+          details.id,
+          lineNo,
+          parentLineNo,
+          option.merchant_id || item.merchant_id,
+          option.title || 'Untitled Option',
+          option.quantity || 1,
+          option.price || 0,
+          option.discount || 0,
+          option.total_price || 0,
+          option.total_price + option.total_tax || 0,
+          option.group?.is_variant ? '1' : '0',
+          option.instructions || '',
+          cgst.rate || 0,
+          cgst.liability_on || '',
+          cgst.value || 0,
+          cgst.title || '',
+          sgst.rate || 0,
+          sgst.liability_on || '',
+          sgst.value || 0,
+          sgst.title || '',
+          option.voucher_code || '',
+          indent
+        ];
+
+        await pool.query(orderLineQuery, orderLineValues);
+
+        if (isFirstUnderDummy) {
+          dummyBaseLineNo = lineNo;
+          itemIdToLineNo.set(option.id, lineNo);
+        }
+        lineNo++;
+      }
     }
+    const session = await getServerSession(authOptions);
+    const currentUser = session?.user?.user_name || 'system';
 
     // Insert into order_status
     const orderStatusQuery = `
@@ -124,16 +201,16 @@ export async function POST(req: Request) {
       )
     `
     const statusValues = [
-      '',
+      details.dash_extra_info || "",
       details.id,
-      '',
+      details.instructions || "",
       details.order_state,
       details.id,
       null,
       order.store.id.toString(),
       new Date(details.created),
-      'ConsumerApp',
-      'ConsumerApp'
+      currentUser,
+      currentUser
     ]
     await pool.query(orderStatusQuery, statusValues)
 
