@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import pool from '@/lib/db'
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { toPostgresDateTime } from '@/lib/date';
+
 export async function POST(req: Request) {
   try {
     const body = await req.json()
@@ -42,11 +44,11 @@ export async function POST(req: Request) {
       details.order_total,
       details.order_type,
       details.discount,
-      details.delivery_datetime ? new Date(details.delivery_datetime) : null,
+      details.delivery_datetime ? toPostgresDateTime(details.delivery_datetime) : null,
       details.order_state,
       details.instructions || "",
       details.total_charges,
-      new Date(details.created),
+      toPostgresDateTime(details.created),
       details.order_subtotal,
       details.payable_amount,
       order.store.name,
@@ -58,7 +60,7 @@ export async function POST(req: Request) {
       details.ext_platforms?.[0]?.extras?.deliver_asap || false,
       details.ext_platforms?.[0]?.extras?.order_otp || "",
       customer.app_user_id,
-      new Date(details.expected_pickup_time)
+      toPostgresDateTime(details.expected_pickup_time)
     ]
 
     await pool.query(orderHeaderQuery, headerValues)
@@ -81,14 +83,14 @@ export async function POST(req: Request) {
           items_options_to_add_group_is_variant, item_instructions,
           cgst_rate, cgst_liability_on, cgst_amount, cgst_title,
           sgst_rate, sgst_liability_on, sgst_amount, sgst_title,
-          items_redeem_subscription_voucher_code, indent
+          items_redeem_subscription_voucher_code, indent,item_id
         ) VALUES (
           $1, $2, $3, $4, $5, $6,
           $7, $8, $9, $10,
           $11, $12,
           $13, $14, $15, $16,
           $17, $18, $19, $20,
-          $21, $22
+          $21, $22, $23
         )
       `
         const cgst = item.taxes?.find((t: any) => t.title === 'CGST') || {};
@@ -117,7 +119,8 @@ export async function POST(req: Request) {
           sgst.value || 0,
           sgst.title || '',
           item.discount_code || '',
-          0 // indent
+          0, // indent
+          item.id
         ];
 
         await pool.query(orderLineQuery, orderLineValues);
@@ -142,14 +145,14 @@ export async function POST(req: Request) {
         items_options_to_add_group_is_variant, item_instructions,
         cgst_rate, cgst_liability_on, cgst_amount, cgst_title,
         sgst_rate, sgst_liability_on, sgst_amount, sgst_title,
-        items_redeem_subscription_voucher_code, indent
+        items_redeem_subscription_voucher_code, indent,item_id
       ) VALUES (
         $1, $2, $3, $4, $5, $6,
         $7, $8, $9, $10,
         $11, $12,
         $13, $14, $15, $16,
         $17, $18, $19, $20,
-        $21, $22
+        $21, $22, $23
       )
     `;
 
@@ -175,7 +178,8 @@ export async function POST(req: Request) {
           sgst.value || 0,
           sgst.title || '',
           option.voucher_code || '',
-          indent
+          indent,
+          item.id
         ];
 
         await pool.query(orderLineQuery, orderLineValues);
@@ -208,7 +212,7 @@ export async function POST(req: Request) {
       details.id,
       null,
       order.store.id.toString(),
-      new Date(details.created),
+      toPostgresDateTime(details.created),
       currentUser,
       currentUser
     ]
