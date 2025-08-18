@@ -11,7 +11,7 @@ export async function PUT(req: Request) {
     const { role_code, user_code, user_name, first_name, last_name } = body
 
     const query = `
-      UPDATE "OOMiddleware"."Users" SET
+      UPDATE "OOMiddleware"."users" SET
         role_code = $1,
         user_name = $2,
         first_name = $3,

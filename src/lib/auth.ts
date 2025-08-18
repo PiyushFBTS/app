@@ -27,7 +27,7 @@ export const authOptions: NextAuthOptions = {
 
         try {
           const res = await pool.query(
-            `SELECT * FROM "OOMiddleware"."Users" WHERE user_name = $1`,
+            `SELECT * FROM "OOMiddleware"."users" WHERE user_name = $1`,
             [credentials.username]
           )
 

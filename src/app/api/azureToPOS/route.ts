@@ -15,7 +15,7 @@ export async function GET(req: Request) {
         order_store, order_store_merchant_ref_id, order_table_no, created_date_time, order_ext_platform_id,
         order_discount_id, order_discount_code, order_is_instant_order, order_otp, customer_app_uid,
         order_expected_pickup_time
-      FROM "OOMiddleware"."Order_Header"
+      FROM "OOMiddleware"."order_header"
     `
 
     const values: any[] = []

@@ -11,9 +11,9 @@ export async function POST(req: Request) {
     const { customer, order } = body
     const details = order.details
 
-    // 1. Insert into Order_Header
+    // 1. Insert into order_header
     const orderHeaderQuery = `
-      INSERT INTO "OOMiddleware"."Order_Header" (
+      INSERT INTO "OOMiddleware"."order_header" (
         order_id, order_channel, customer_phone, customer_email, customer_name,
         order_total_tax, order_payable_amount, order_total, order_type, order_discount,
         order_delivery_datetime, order_status, order_instructions, order_total_charges,

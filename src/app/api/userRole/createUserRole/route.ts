@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     const currentTime = new Date();
 
     const query = `
-      INSERT INTO "OOMiddleware"."User_Role"(
+      INSERT INTO "OOMiddleware".user_role(
  role_code, role_name, role_description, created_by, created_on, modified_by, modified_on
       )
       VALUES ($1, $2, $3, $4, $5, $6, $7 )

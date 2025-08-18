@@ -153,7 +153,7 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
                                                 const roleCode = Number.parseInt(value, 10)
                                                 field.onChange(roleCode)
                                             }}
-                                            disabled={user.role_code === 1 && !isEditMode}
+                                            disabled={isEditMode}
                                             value={field.value ? field.value.toString() : ""}
                                         >
                                             <FormControl>
