@@ -4,7 +4,7 @@ import pool from '@/lib/db';
 export async function GET() {
   try {
     
-    const res = await pool.query('SELECT * FROM  "OOMiddleware"."User_Role" ORDER BY role_code ASC');
+    const res = await pool.query('SELECT * FROM  "OOMiddleware".user_role ORDER BY role_code ASC');
 
     return NextResponse.json(res.rows);
   } catch (error) {

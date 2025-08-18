@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     }
 
     const query = `
-      DELETE FROM "OOMiddleware"."Users"
+      DELETE FROM "OOMiddleware"."users"
       WHERE user_code = ANY($1::integer[])
     `;
     await pool.query(query, [ids]);

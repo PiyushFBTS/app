@@ -4,7 +4,7 @@ import pool from '@/lib/db';
 export async function GET(request: Request,{ params }: { params: Promise<{ id: string }> }) {
   try {
     const id = (await params)?.id
-    const result = await pool.query('SELECT * FROM "OOMiddleware"."Users" WHERE user_code = $1', [id]);
+    const result = await pool.query('SELECT * FROM "OOMiddleware"."users" WHERE user_code = $1', [id]);
 
     if (result.rows.length === 0) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
