@@ -113,7 +113,7 @@ export async function POST(req: Request) {
       order_details_ext_platforms_order_otp: header.order_otp
     }))
 
-    return NextResponse.json(response, { status: 200 })
+    return NextResponse.json({ orders: response }, { status: 200 })
 
   } catch (err: any) {
     console.error(err)
