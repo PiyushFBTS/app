@@ -2,11 +2,10 @@ import { NextResponse } from 'next/server';
 import pool from '@/lib/db';
 import { formatDate } from '@/lib/date';
 
-export async function GET(req: Request) {
+export async function POST(req: Request) {
   try {
-    const { searchParams } = new URL(req.url)
-    const merchantRefId = searchParams.get('order_store_merchant_ref_id')
-    const OrderDate = searchParams.get('order_created') // expected format: 'DD-MM-YYYY'
+    const body = await req.json();
+    const { storeid: merchantRefId, order_created: OrderDate } = body;
 
     let headerQuery = `
       SELECT order_id, order_channel, order_unique_id, customer_phone, customer_email, customer_name,
