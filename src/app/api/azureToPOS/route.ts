@@ -70,7 +70,9 @@ export async function POST(req: Request) {
 
     // Format response
     const response = headerRows.map((header: any) => ({
-      order_details_delivery_datetime: header.order_delivery_datetime || '0',
+      order_details_delivery_datetime: header.order_delivery_datetime
+        ? String(Math.floor(new Date(header.order_delivery_datetime).getTime() / 1000))
+        : "0",
       order_details_order_subtotal: header.order_subtotal || '0.00',
       order_payment_amount: header.order_payment_amount || '0.00',
       order_details_id: header.order_id,
