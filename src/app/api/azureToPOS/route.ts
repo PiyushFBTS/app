@@ -5,7 +5,7 @@ import { formatDate } from '@/lib/date';
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { storeid: merchantRefId, order_created: OrderDate } = body;
+    const { storeid: merchantRefId } = body;
 
     let headerQuery = `
       SELECT order_id, order_channel, order_unique_id, customer_phone, customer_email, customer_name,
@@ -25,18 +25,6 @@ export async function POST(req: Request) {
       values.push(merchantRefId)
     }
 
-    if (OrderDate) {
-      const parts = OrderDate.split('-');
-      if (parts.length === 3) {
-        const [day, month, year] = parts;
-        const formattedDate = `${year}-${month}-${day}`; // convert for DB formatYYYY-MM-DD
-        conditions.push(`DATE(order_created) = $${values.length + 1}`);        
-        values.push(formattedDate);
-        
-      } else {
-        console.warn('Invalid date format received:', OrderDate);
-      }
-    }
 
     if (conditions.length > 0) {
       headerQuery += ' WHERE ' + conditions.join(' AND ')
@@ -91,7 +79,7 @@ export async function POST(req: Request) {
       order_details_total_charges: header.order_total_charges || '0.00',
       order_details_order_total: header.order_total || '0.00',
       order_store_name: header.order_store,
-      order_details_created: formatDate(header.order_created),
+      order_details_created: header.order_created,
       order_store_merchant_ref_id: header.order_store_merchant_ref_id,
       order_details_total_taxes: header.order_total_tax || '0.00',
       order_details_order_level_total_taxes: header.order_total_tax || '0.00',
