@@ -73,6 +73,10 @@ export async function POST(req: Request) {
       order_details_delivery_datetime: header.order_delivery_datetime
         ? String(Math.floor(new Date(header.order_delivery_datetime).getTime() / 1000))
         : "0",
+      order_details_expected_pickup_time: header.order_expected_pickup_time
+        ? String(BigInt(Math.floor(new Date(header.order_expected_pickup_time).getTime() / 1000)))
+        : "0",
+
       order_details_order_subtotal: header.order_subtotal || '0.00',
       order_payment_amount: header.order_payment_amount || '0.00',
       order_details_id: header.order_id,
@@ -93,7 +97,6 @@ export async function POST(req: Request) {
       order_details_channel: header.order_channel,
       order_details_order_type: header.order_type,
       customer_name: header.customer_name,
-      order_details_expected_pickup_time: formatDate(header.order_expected_pickup_time),
       items: itemMap[header.order_id] || [],
       order_details_payable_amount: header.order_payable_amount,
       order_details_instructions: header.order_instructions || '',
@@ -103,6 +106,8 @@ export async function POST(req: Request) {
       order_details_ext_platforms_order_otp: header.order_otp
     }))
 
+    console.log("header.order_expected_pickup_time",response[0].order_details_expected_pickup_time);
+    
     return NextResponse.json({ orders: response }, { status: 200 })
 
   } catch (err: any) {
