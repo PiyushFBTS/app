@@ -48,7 +48,7 @@ export async function POST(req: Request) {
       details.order_state,
       details.instructions || "",
       details.total_charges,
-      toPostgresDateTime(details.created),
+      details.created,
       details.order_subtotal,
       details.payable_amount,
       order.store.name,

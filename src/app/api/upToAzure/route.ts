@@ -52,7 +52,7 @@ export async function POST(req: Request) {
       details.order_state,
       details.instructions,
       details.total_charges,
-      toPostgresDateTime(details.created),
+      details.created,
       details.order_subtotal,
       details.payable_amount,
       order.store.name,
@@ -64,7 +64,7 @@ export async function POST(req: Request) {
       details.ext_platforms?.[0]?.extras?.deliver_asap || 0,
       details.ext_platforms?.[0]?.extras?.order_otp,
       customer.id,
-      details.expected_pickup_time ? toPostgresDateTime(details.expected_pickup_time) : null
+      details.expected_pickup_time ? details.expected_pickup_time : null
     ];
 
     await pool.query(orderHeaderQuery, headerValues)
