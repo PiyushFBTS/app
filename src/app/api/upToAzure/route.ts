@@ -32,11 +32,12 @@ export async function POST(req: Request) {
         $24, $25, $26,
         $27
       )
-    `
-    const discountItem = order.items.find((item: any) => item.discount_id && item.discount_code);
+    `;
 
-    const order_discount_id = discountItem?.discount_id ?? '';
-    const order_discount_code = discountItem?.discount_code ?? '';
+    const order_discount_id = details.discount_id ;
+
+    const order_discount_code = details.coupon ;
+
     const headerValues = [
       details.id,
       details.channel,
@@ -59,7 +60,7 @@ export async function POST(req: Request) {
       order.store.merchant_ref_id,
       order.table_no || '',
       details.ext_platforms?.[0]?.id ?? null,
-      order_discount_id,
+      order_discount_id || '',
       order_discount_code,
       details.ext_platforms?.[0]?.extras?.deliver_asap || 0,
       details.ext_platforms?.[0]?.extras?.order_otp,
@@ -148,7 +149,7 @@ export async function POST(req: Request) {
         sgst.liability_on || '',
         sgst.liability_on === "aggregator" ? 0 : sgst.value,
         sgst.title || '',
-        item.discount_code || '',
+        item.voucher_code || '',
         indent,
         item.id
       ];

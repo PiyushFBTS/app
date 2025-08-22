@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import pool from '@/lib/db';
-import { formatDate } from '@/lib/date';
 
 export async function POST(req: Request) {
   try {
@@ -72,10 +71,10 @@ export async function POST(req: Request) {
     const response = headerRows.map((header: any) => ({
       order_details_delivery_datetime: header.order_delivery_datetime
         ? String(Math.floor(new Date(header.order_delivery_datetime).getTime() / 1000))
-        : "0",
+        : "",
       order_details_expected_pickup_time: header.order_expected_pickup_time
         ? String(BigInt(Math.floor(new Date(header.order_expected_pickup_time).getTime() / 1000)))
-        : "0",
+        : "",
 
       order_details_order_subtotal: header.order_subtotal || '0.00',
       order_payment_amount: header.order_payment_amount || '0.00',
