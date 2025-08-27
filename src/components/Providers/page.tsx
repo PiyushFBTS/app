@@ -16,7 +16,7 @@ function AppInit({ children }: { children: ReactNode }) {
       if (status !== "authenticated" || !session?.user?.user_code) return;
 
       try {
-        const response = await axios.get(`/api/user/userData/${session.user.user_code}`);
+        const response = await axios.get(`/api/user-api/user/userData/${session.user.user_code}`);
         const data = response.data;
 
         const {

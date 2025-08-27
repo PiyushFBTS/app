@@ -32,7 +32,7 @@ export function UserTable<TData extends UserData, TValue>({ columns, data }: Dat
         const selectedRows = table.getSelectedRowModel().rows
         const idsToDelete = selectedRows.map((row) => row.original.user_code)
         try {
-            const res = await axios.post("/api/user/deleteUser", {
+            const res = await axios.post("/api/user-api/user/deleteUser", {
                 ids: idsToDelete,
             });
          
