@@ -10,7 +10,7 @@ export default function UserDataTable() {
   const [userData, setUserData] = useState([]);
   const fetchUserData = async () => {
     try {
-      const response = await axios.get('/api/user/userData')
+      const response = await axios.get('/api/user-api/user/userData')
       setUserData(response.data)
     } catch (error) {
       console.error("error fetch in user", error);

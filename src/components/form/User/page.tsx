@@ -101,7 +101,7 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
                 delete submitData.password
             }
 
-            const endpoint = isEditMode ? `/api/user/updateUser` : "/api/user/createUser"
+            const endpoint = isEditMode ? `/api/user-api/user/updateUser` : "/api/user-api/user/createUser"
             const method = isEditMode ? "PUT" : "POST"
 
             const response = await fetch(endpoint, {
