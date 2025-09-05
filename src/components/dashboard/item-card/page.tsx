@@ -1,14 +1,16 @@
+'use client'
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent } from "@/components/ui/card"
-import { TrendingUp, FileText, Package, CircleX, CircleDollarSign } from "lucide-react"
+import { FileText, Package,  } from "lucide-react"
 import axios from 'axios';
 import { OrderTotal } from "@/types/dashboard.type"
-
+import Link from 'next/link';
+import { useRouter } from "next/navigation";
 
 
 function ItemCard() {
     const [orderDetail, setOrderDetail] = useState<OrderTotal[]>([])
-
+    const router = useRouter();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -17,15 +19,16 @@ function ItemCard() {
         }
         fetchData()
     }, [])
-console.log("orderDetail",orderDetail);
+    console.log("orderDetail", orderDetail);
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 p-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 p-4 ">
             {orderDetail.map((data, index) => {
                 return (
                     <div key={index} className="w-full">
-                        <Card className="p-6 bg-white shadow-md border border-gray-200 h-full rounded-2xl hover:shadow-xl transition-all duration-300 hover:bg-indigo-50">
-
+                        <Card
+                            className={`p-6 bg-white shadow-md border border-gray-200 h-full rounded-2xl hover:shadow-xl transition-all duration-300 hover:bg-indigo-50 ${data.col1 === "Todays Orders" ? "cursor-pointer" : ""}`}
+                            onClick={data.col1 === "Todays Orders" ? () => router.push("/orderlist") : undefined}>
                             <CardContent className="p-0">
                                 <div className="flex items-start justify-between">
                                     {/* Icon Section */}

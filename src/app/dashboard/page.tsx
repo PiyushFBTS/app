@@ -11,10 +11,9 @@ function Dashboard() {
 
   return (
     <>
-      <div className="space-y-6">
+      <div className="space-y-2">
         <div className="p-4">
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">Welcome to Third Wave Coffee Management System</p>
+          <h1 className="text-2xl font-bold tracking-tight">Welcome to Third Wave Coffee Management System</h1>
         </div>
 
         {/* Display user information */}
@@ -28,16 +27,12 @@ function Dashboard() {
         <div>
           <ItemCard />
         </div>
-        <div className="grid gap-4 md:grid-cols-2 w-full p-2 m-4">
-          {/* Left side */}
-          <div>
-            {/* <ItemPieChart /> */}
-          </div>
-
-          {/* Right side */}
-          <div>
+        <div className="grid gap-4 md:grid-cols-2 m-4">
+         <div className="flex justify-center items-center p-4 rounded-lg border w-full h-full">
+          <h1 className="">Sample Data</h1>
+         </div>
             <OutletwiseOrders />
-          </div>
+          
         </div>
       </div>
     </>
