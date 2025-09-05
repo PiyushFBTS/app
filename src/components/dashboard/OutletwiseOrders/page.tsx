@@ -40,7 +40,7 @@ export function OutletwiseOrders() {
     const maxVisibleHeight = 500
 
     return (
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden scrollbar-hide ">
             <CardHeader>
                 <CardTitle>Outletwise Orders</CardTitle>
                 <CardDescription>Orders by outlet location</CardDescription>
@@ -79,7 +79,7 @@ export function OutletwiseOrders() {
                             />
 
                             <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
-                            <Bar dataKey="col3" fill="#f0f0f5" radius={4} stroke="#000000" strokeWidth={1} rx={4}    >
+                            <Bar dataKey="col3" fill="#ff8c1a" radius={4} stroke="#000000" strokeWidth={1} rx={4}    >
 
                                 {/* <LabelList
                                     dataKey="col2"
