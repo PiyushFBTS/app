@@ -21,7 +21,7 @@ export default async function AppLayout({
       <SchoolSidebar />
       <div className="flex flex-col w-full">
         <SchoolHeader />
-        <main className="flex-1 p-6">{children}</main>
+        <main className="flex-1">{children}</main>
       </div>
     </div>
   );

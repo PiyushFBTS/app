@@ -1,67 +1,48 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, CardContent } from "@/components/ui/card"
 import { TrendingUp, FileText, Package, CircleX, CircleDollarSign } from "lucide-react"
+import axios from 'axios';
+import { OrderTotal } from "@/types/dashboard.type"
 
-const itemData = [
-    {
-        id: 1,
-        title: 'Total Orders',
-        number: 75,
-        icon: <FileText className="w-6 h-6 text-green-600" />
-    },
-    {
-        id: 2,
-        title: 'Total Delivered',
-        number: 575,
-        icon: <Package className="w-6 h-6 text-green-600" />
-    },
-    {
-        id: 3,
-        title: 'Total Canceled',
-        number: 24,
-        icon: <CircleX className="w-6 h-6 text-green-600" />
-    },
-    {
-        id: 4,
-        title: 'Total Revenue',
-        number: 575,
-        icon: <CircleDollarSign className="w-6 h-6 text-green-600" />
-    },
-]
+
 
 function ItemCard() {
+    const [orderDetail, setOrderDetail] = useState<OrderTotal[]>([])
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const res = await axios.get("api/dashboard/NoOfOrders")
+            setOrderDetail(res.data)
+        }
+        fetchData()
+    }, [])
+console.log("orderDetail",orderDetail);
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 p-4">
-            {itemData.map((data, index) => {
+            {orderDetail.map((data, index) => {
                 return (
-                    <div key={data.id} className="w-full">
-                        <Card className="p-6 bg-white shadow-sm border border-gray-100 h-full">
+                    <div key={index} className="w-full">
+                        <Card className="p-6 bg-white shadow-md border border-gray-200 h-full rounded-2xl hover:shadow-xl transition-all duration-300 hover:bg-indigo-50">
+
                             <CardContent className="p-0">
                                 <div className="flex items-start justify-between">
                                     {/* Icon Section */}
                                     <div className="flex-shrink-0">
                                         <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                                            {data.icon}
+                                            {data.col1 === 'Todays Orders' ? <FileText className="w-6 h-6 text-indigo-500" /> : <Package className="w-6 h-6 text-indigo-500" />}
                                         </div>
                                     </div>
-
-                                    {/* Content Section */}
                                     <div className="flex-1 ml-4">
                                         {/* Main Number */}
                                         <div className="text-3xl font-bold text-gray-900 mb-1">
-                                            {data.number}
+                                            {data.col2}
                                         </div>
 
                                         {/* Title */}
                                         <div className="text-gray-600 font-medium mb-3">
-                                            {data.title}
-                                        </div>
-
-                                        {/* Statistics */}
-                                        <div className="flex items-center text-sm">
-                                            <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
-                                            <span className="text-green-500 font-medium">4%</span>
-                                            <span className="text-gray-500 ml-1">(30 days)</span>
+                                            {data.col1}
                                         </div>
                                     </div>
                                 </div>

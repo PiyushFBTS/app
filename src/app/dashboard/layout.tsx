@@ -22,7 +22,7 @@ export default async function DashboardLayout({
       <SchoolSidebar />
       <SidebarInset>
         <SchoolHeader />
-        <main className="flex-1 p-6">{children}</main>
+        <main className="flex-1">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   )
