@@ -1,7 +1,7 @@
 "use client"
 
 import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, Cell, LabelList, XAxis, YAxis } from "recharts"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import axios from "axios"
@@ -74,21 +74,29 @@ export function OutletwiseOrders() {
                                 tickLine={false}
                                 tickMargin={10}
                                 axisLine={false}
+                                fill="#fff"
                                 tickFormatter={(value) => value.slice(0, 12) + (value.length > 12 ? "..." : "")}
-                                
-                            />
+                           hide
+                           />
 
                             <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
-                            <Bar dataKey="col3" fill="#ff8c1a" radius={4} stroke="#000000" strokeWidth={1} rx={4}    >
+                            <Bar dataKey="col3" radius={4} stroke="#3b82f6" strokeWidth={1} rx={4}>
+                                {order.map((entry, index) => {
+                                    // Calculate color intensity based on value (assuming data is sorted high to low)
+                                    const intensity = index / (order.length - 1); // normalized 0 → 1
+                                    const hue = 220 - intensity * 220; // range: 220 (blue) → 0 (red)
+                                    const color = `hsl(${hue}, 70%, 50%)`; // keeps saturation & lightness consistent
 
-                                {/* <LabelList
+                                    return <Cell key={`cell-${index}`} fill={color} />;
+                                })}
+                                <LabelList
                                     dataKey="col2"
                                     position="insideLeft"
                                     offset={8}
                                     formatter={(value: string) => (value.length > 15 ? value.slice(0, 15) + "..." : value)}
                                     fontSize={12}
-                                    fill="#000000"
-                                /> */}
+                                    fill="#fff"
+                                />
                                 <LabelList
                                     dataKey="col3"
                                     position="right"
