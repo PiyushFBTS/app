@@ -37,7 +37,7 @@ function Dashboard() {
     <>
       <div className="space-y-2">
         <div className="p-4">
-          <h1 className="text-2xl font-bold tracking-tight">Welcome to Third Wave Coffee Management System</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Welcome to Third Wave Coffee Online order management System</h1>
         </div>
 
         {/* Display user information */}
