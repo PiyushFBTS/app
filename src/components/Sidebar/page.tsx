@@ -92,27 +92,7 @@ export function SchoolSidebar() {
 
         <Separator className="mx-2 my-2" />
 
-        {/* Academic */}
-        {/* <SidebarGroup>
-          <SidebarGroupLabel>Academic</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navigationData.academic.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild tooltip={item.title}>
-                    <a href={item.url} className="flex items-center gap-2">
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup> */}
-
-        <Separator className="mx-2 my-2" />
-
+        
         {/* Communication */}
         <SidebarGroup>
           <SidebarGroupLabel>Report</SidebarGroupLabel>
@@ -154,12 +134,7 @@ export function SchoolSidebar() {
         </SidebarGroup> */}
       </SidebarContent>
 
-      <SidebarFooter>
-        <div className="p-2 text-xs text-muted-foreground group-data-[collapsible=icon]:hidden">
-          <p>© 2024 Third Wave Coffee</p>
-          <p className="text-muted-foreground/70">Version 1.0.0</p>
-        </div>
-      </SidebarFooter>
+      
 
       <SidebarRail />
     </Sidebar>
