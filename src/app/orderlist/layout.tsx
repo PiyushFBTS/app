@@ -2,10 +2,11 @@ import type React from "react"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { redirect } from "next/navigation"
-import { SchoolHeader } from "@/components/Header/page"
+import { Header } from "@/components/Header/page"
 import { SchoolSidebar } from "@/components/Sidebar/page"
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import '../globals.css';
+import Footer from "@/components/Footer/page"
 export default async function DashboardLayout({
   children,
 }: {
@@ -21,10 +22,11 @@ export default async function DashboardLayout({
     <SidebarProvider>
       <SchoolSidebar />
       <SidebarInset className="overflow-hidden">
-        <SchoolHeader />
+        <Header />
         <main className="flex-1 m-4">
           {children}
         </main>
+        <Footer/>
       </SidebarInset>
     </SidebarProvider>
   )

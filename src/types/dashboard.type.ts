@@ -9,3 +9,11 @@ export type OrderTotal = {
     col2: number
     icon?:any
 }
+export type POSFetchedOrdersType = {
+    col1: string
+    col2: number
+}
+export type POSDeliveredOrdersType = {
+    col1: string
+    col2: number
+}

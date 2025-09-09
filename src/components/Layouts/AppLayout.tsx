@@ -2,8 +2,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
-import { SchoolHeader } from "@/components/Header/page";
+import { Header } from "@/components/Header/page";
 import { SchoolSidebar } from "@/components/Sidebar/page";
+import Footer from "../Footer/page";
 
 export default async function AppLayout({
   children,
@@ -20,8 +21,9 @@ export default async function AppLayout({
     <div className="flex min-h-screen">
       <SchoolSidebar />
       <div className="flex flex-col w-full">
-        <SchoolHeader />
+        <Header />
         <main className="flex-1">{children}</main>
+        <Footer />
       </div>
     </div>
   );
