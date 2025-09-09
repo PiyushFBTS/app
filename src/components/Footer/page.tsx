@@ -7,7 +7,7 @@ export default function Footer() {
         <p className="text-xs text-muted-foreground text-center tracking-wide">
           Designed & Developed by{" "}
           <span className="font-semibold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-            Flamboutnant
+            Flamboyant Technologies Pvt Ltd
           </span>
         </p>
       </div>
