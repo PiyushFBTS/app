@@ -20,7 +20,7 @@ export interface DataTableProps<TData extends UserData, TValue> {
 
 export type UserData = {
     role_code: number,
-    user_code: number,
+    user_code?: number,
     user_name: string,
     password: string,
     first_name: string,

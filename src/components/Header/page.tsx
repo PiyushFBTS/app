@@ -16,7 +16,6 @@ export function Header() {
   const user = useSelector((state: RootState) => state.user)
 
   const handleLogout = async () => {
-    console.log("check -1")
     await signOut({
       callbackUrl: "/auth/login",
       redirect: true,

@@ -29,6 +29,8 @@ export default function Login() {
       toast.success("Login successful!");
       router.push('/');
     } else {
+      console.log("res?.error?",res?.error);
+      
       if (res?.error?.includes("No user found")) {
         setError("User not found. Please check your username.");
         toast.error("User not found");
@@ -57,7 +59,7 @@ export default function Login() {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
               placeholder="Username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => setUsername(e.target.value.toLowerCase())}
               required
             />
 
