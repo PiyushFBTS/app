@@ -23,7 +23,7 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
     const [roles, setRoles] = useState<Role[]>([])
     const [originalUserCode, setOriginalUserCode] = useState<number | undefined>()
     const router = useRouter()
-      const user = useSelector((state: RootState) => state.user)
+    const user = useSelector((state: RootState) => state.user)
     // Use different schemas based on mode
     const schema = isEditMode ? editUserSchema : createUserSchema
 
@@ -37,7 +37,6 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
             }
             : {
                 role_code: 0,
-                user_code: 0,
                 user_name: "",
                 password: "",
                 first_name: "",
@@ -93,7 +92,7 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
             // Prepare data for submission
             const submitData = {
                 ...data,
-                user_code: isEditMode ? originalUserCode : data.user_code,
+                user_code: isEditMode ? originalUserCode : undefined,
             }
 
             // Remove password field if empty in edit mode
@@ -173,35 +172,7 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
                                     </FormItem>
                                 )}
                             />
-                            <FormField
-                                control={form.control}
-                                name="user_code"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>User Code</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                placeholder="Enter user code"
-                                                disabled={isEditMode}
-                                                className={isEditMode ? "bg-muted" : ""}
-                                                type="number"
 
-                                                {...field}
-                                                onChange={(e) => {
-                                                    const value = e.target.value
-                                                    field.onChange(value === "" ? 0 : Number(value))
-                                                }}
-                                                value={field.value || ""}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                        </div>
-
-                        {/* Username and First Name */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <FormField
                                 control={form.control}
                                 name="user_name"
@@ -209,12 +180,17 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
                                     <FormItem>
                                         <FormLabel>Username</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Enter Username" {...field} />
+                                            <Input
+                                                placeholder="Enter Username"
+                                                {...field}
+                                                onChange={(e) => field.onChange(e.target.value.toLowerCase())}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
+
                             <FormField
                                 control={form.control}
                                 name="first_name"
@@ -228,10 +204,6 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
                                     </FormItem>
                                 )}
                             />
-                        </div>
-
-                        {/* Last Name and Password */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <FormField
                                 control={form.control}
                                 name="last_name"

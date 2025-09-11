@@ -2,14 +2,15 @@
 import CredentialsProvider from "next-auth/providers/credentials"
 import type { NextAuthOptions } from "next-auth"
 import pool from "@/lib/db"
+import bcrypt from "bcryptjs"
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
-    strategy: "jwt", // Use JWT-based session
+    strategy: "jwt",
   },
   pages: {
-    signIn: "/auth/login", // Customize if needed
+    signIn: "/auth/login",
   },
   providers: [
     CredentialsProvider({
@@ -21,8 +22,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.username || !credentials?.password) {
           throw new Error("Missing credentials")
-        }   
-        
+        }
 
         try {
           const res = await pool.query(
@@ -31,16 +31,14 @@ export const authOptions: NextAuthOptions = {
           )
 
           const user = res.rows[0]
-          console.log();
+          
           
 
           if (!user) throw new Error("No user found with this username")
 
-          // For production: replace this with bcrypt compare()
-          console.log("credentials.password", credentials.password);
-          console.log("user.password", user.password);
-
-          if (credentials.password !== user.password) {
+          // ✅ Compare hashed password with bcrypt
+          const isValid = await bcrypt.compare(credentials.password, user.password)
+          if (!isValid) {
             throw new Error("Invalid password")
           }
 

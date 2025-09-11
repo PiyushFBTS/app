@@ -10,7 +10,6 @@ function QuantityPieData() {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("Fetching chart data...");
 
       try {
         const resQty = await axios.get("/api/dashboard/pie-chart/Todays/TodaysTop10Qty");

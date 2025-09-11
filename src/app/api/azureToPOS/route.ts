@@ -11,9 +11,7 @@ export async function POST(req: Request) {
     const { rows } = await pool.query(headerQuery, [merchantRefId]);
     
     // rows[0].orders will contain the jsonb result from the function
-    const orders = rows[0]?.orders || { Order: [] };
-    console.log("Orders fetched:", orders.orders.length);
-    
+    const orders = rows[0]?.orders || { Order: [] };    
 
     return NextResponse.json(orders, { status: 200 });
   } catch (err: any) {

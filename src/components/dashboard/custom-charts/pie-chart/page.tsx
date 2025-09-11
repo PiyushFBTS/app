@@ -120,8 +120,6 @@ export function CustomPieChart({ title, description, data = [] }: CustomPieChart
   const total = validChartData.reduce((sum, item) => sum + item.value, 0)
   const dataWithTotal = validChartData.map((item) => ({ ...item, total }))
 
-  console.log("Original Data:", data)
-  console.log("Transformed Chart Data:", validChartData)
 
   // Create config object for ChartContainer
   const chartConfig = validChartData.reduce(

@@ -18,7 +18,6 @@ function Dashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("Fetching chart data...");
       try {
         const resAmount = await axios.get("/api/dashboard/pie-chart/Todays/TodaysTop10Amount");
         setTotalAmount(resAmount.data);
