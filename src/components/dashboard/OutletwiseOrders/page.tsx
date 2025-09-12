@@ -39,10 +39,10 @@ export function OutletwiseOrders() {
     const maxVisibleHeight = 500
 
     return (
-        <Card className="overflow-hidden scrollbar-hide ">
+        <Card className="overflow-hidden scrollbar-hide h-[600px]  hover:shadow-xl transition-shadow duration-300">
             <CardHeader>
-                <CardTitle>Outletwise Orders</CardTitle>
-                <CardDescription>Orders by outlet location</CardDescription>
+                <CardTitle className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent text-center">Outletwise Orders</CardTitle>
+                {/* <CardDescription>Orders by outlet location</CardDescription> */}
             </CardHeader>
             <CardContent>
                 <div

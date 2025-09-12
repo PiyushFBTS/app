@@ -108,7 +108,7 @@ export function CustomBarChart({ title, description, data }: BarChartCardProps) 
     }, {} as ChartConfig)
 
     return (
-        <Card className="flex flex-col h-[700px] shadow-lg border-0 bg-gradient-to-br from-background to-muted/20 hover:shadow-xl transition-shadow duration-300 pb-4">
+        <Card className="flex flex-col h-[600px] shadow-lg  hover:shadow-xl transition-shadow duration-300 pb-4">
             <CardHeader className="items-center pb-0 h-[80px] flex flex-col justify-center">
                 <CardTitle className="text-xl font-bold text-center">{title}</CardTitle>
                 {description && <CardDescription className="text-center">{description}</CardDescription>}

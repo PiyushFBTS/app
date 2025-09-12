@@ -64,7 +64,7 @@ export function SchoolSidebar() {
             </div>
             <div className="group-data-[collapsible=icon]:hidden">
               <span className="font-semibold text-sm">Third Wave Coffee</span>
-              <p className="text-xs text-muted-foreground">Management System</p>
+              <p className="text-xs text-muted-foreground">Online Order Management System</p>
             </div>
           </div>
         </div>

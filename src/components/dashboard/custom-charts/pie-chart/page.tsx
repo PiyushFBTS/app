@@ -12,7 +12,7 @@ type ChartDataType = {
 
 interface CustomPieChartProps {
   title: string
-  description?: string
+  // description?: string
   data?: ChartDataType[] // Made data optional to prevent runtime errors
 }
 
@@ -80,7 +80,7 @@ const renderActiveShape = (props: any) => {
   );
 };
 
-export function CustomPieChart({ title, description, data = [] }: CustomPieChartProps) {
+export function CustomPieChart({ title, data = [] }: CustomPieChartProps) {
   if (!data || data.length === 0) {
     return (
       <Card className="flex flex-col h-[500px] shadow-lg border-0 bg-gradient-to-br from-background to-muted/20">
@@ -88,11 +88,11 @@ export function CustomPieChart({ title, description, data = [] }: CustomPieChart
           <CardTitle className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent text-center">
             {title}
           </CardTitle>
-          <div className="h-[20px] flex items-center justify-center">
+          {/* <div className="h-[20px] flex items-center justify-center">
             {description && (
               <CardDescription className="text-center text-muted-foreground text-sm">{description}</CardDescription>
             )}
-          </div>
+          </div> */}
         </CardHeader>
         <CardContent className="flex-1 pb-6 flex items-center justify-center">
           <div className="text-center space-y-2">
@@ -137,29 +137,29 @@ export function CustomPieChart({ title, description, data = [] }: CustomPieChart
     0
   );
   return (
-    <Card className="flex flex-col h-[700px] gap-2 shadow-lg border-0 bg-gradient-to-br from-background to-muted/20 hover:shadow-xl transition-shadow duration-300">
+    <Card className="flex flex-col h-[600px] gap-0 p-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
       {/* Fixed height header with consistent spacing */}
       <CardHeader className="items-center pb-0 h-[80px] flex flex-col justify-center">
         <CardTitle className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent text-center">
           {title}
         </CardTitle>
         {/* Reserve space for description even if it doesn't exist */}
-        <div className="h-[20px] flex items-center justify-center">
+        {/* <div className="h-[20px] flex items-center justify-center">
           {description && (
             <CardDescription className="text-center text-muted-foreground text-sm line-clamp-1 px-2">
               {description}
             </CardDescription>
           )}
-        </div>
+        </div> */}
       </CardHeader>
-      <div className="h-[30px] flex items-center justify-center ">
+      {/* <div className="h-[30px] flex items-center justify-center ">
         <div className="flex justify-center items-center gap-4 text-sm">
           <div className="text-center">
             <p className="text-muted-foreground text-xs">Total Orders</p>
             <p className="font-bold text-base text-foreground">{total.toLocaleString()}</p>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* Chart content with consistent height */}
       <CardContent className="flex-1 pb-6 flex flex-col">
         {/* Chart container with fixed dimensions */}

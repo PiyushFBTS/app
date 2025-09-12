@@ -40,6 +40,12 @@ export function Header() {
 
         <div className="flex items-center gap-2 md:gap-4">
 
+          <div className="space-y-1">
+            <p>
+              <strong> Hello ,</strong> {user.first_name} {user.last_name}
+            </p>
+          </div>
+
           {/* User Management - Hidden on mobile, shown on tablet+ */}
           {
             user.user_code === 1 && <div className="hidden md:block">
