@@ -30,13 +30,11 @@ function QuantityPieData() {
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <CustomPieChart
-          title="Top 10 by Quantity for Today"
-          description="sales by quantity for today"
+          title="Top 10 Item by Quantity for Today"
           data={totalQty}
         />
         <CustomPieChart
-          title="Top 10 by Quantity This Month"
-          description="sales by quantity for this month"
+          title="Top 10 Item by Quantity This Month"
           data={totalQtyThisMount}
         />
       </div>
