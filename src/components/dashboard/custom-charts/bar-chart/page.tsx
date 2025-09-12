@@ -1,11 +1,9 @@
 "use client"
-
-import { TrendingUp } from "lucide-react"
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, Tooltip, ResponsiveContainer, Cell, Text } from "recharts"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChartConfig, ChartContainer, ChartTooltipContent } from "@/components/ui/chart"
-import { TotalAmount } from "@/types/pie-chart.type"
-import { useIsMobile } from "@/hooks/use-mobile";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { type ChartConfig, ChartContainer, ChartTooltipContent } from "@/components/ui/chart"
+import type { TotalAmount } from "@/types/pie-chart.type"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 // Props for reusability
 interface BarChartCardProps {
@@ -29,17 +27,14 @@ const PROFESSIONAL_COLORS = [
 ]
 
 // truncate helper
-const truncate = (str: string, max: number) =>
-    str.length > max ? str.slice(0, max) + "…" : str
+const truncate = (str: string, max: number) => (str.length > max ? str.slice(0, max) + "…" : str)
 
 // custom vertical label
-const VerticalNameLabel = (props: any) => {
+const VerticalValueLabel = (props: any) => {
     const { x, y, width, height, value } = props
-    const truncated = truncate(value, 15)
 
     // font size: 10px for small screens (<640px), otherwise 12px
-    const fontSize =
-        typeof window !== "undefined" && window.innerWidth < 640 ? 10 : 12
+    const fontSize = typeof window !== "undefined" && window.innerWidth < 640 ? 10 : 12
 
     return (
         <Text
@@ -49,6 +44,29 @@ const VerticalNameLabel = (props: any) => {
             verticalAnchor="middle"
             angle={-90}
             fill="#fff"
+            fontSize={fontSize}
+            fontWeight="600"
+        >
+            {value}
+        </Text>
+    )
+}
+
+const VerticalBottomLabel = (props: any) => {
+    const { x, y, width, height, value } = props
+    const truncated = truncate(value, 13)
+
+    // font size: 10px for small screens (<640px), otherwise 12px
+    const fontSize = typeof window !== "undefined" && window.innerWidth < 640 ? 10 : 12
+
+    return (
+        <Text
+            x={x! + width! / 2}
+            y={y! + height! + 25}
+            textAnchor="end"
+            verticalAnchor="start"
+            angle={-70}
+            fill="currentColor"
             fontSize={fontSize}
             fontWeight="500"
         >
@@ -81,27 +99,22 @@ export function CustomBarChart({ title, description, data }: BarChartCardProps) 
         fill: PROFESSIONAL_COLORS[index % PROFESSIONAL_COLORS.length],
     }))
 
-    const total = chartData.reduce((sum, item) => sum + item.value, 0)
-
-    const chartConfig = chartData.reduce(
-        (config, item) => {
-            config[item.id] = {
-                label: item.name,
-                color: item.fill,
-            }
-            return config
-        },
-        {} as ChartConfig
-    )
+    const chartConfig = chartData.reduce((config, item) => {
+        config[item.id] = {
+            label: item.name,
+            color: item.fill,
+        }
+        return config
+    }, {} as ChartConfig)
 
     return (
-        <Card className="flex flex-col h-[600px] shadow-lg border-0 bg-gradient-to-br from-background to-muted/20 hover:shadow-xl transition-shadow duration-300 pb-4">
+        <Card className="flex flex-col h-[700px] shadow-lg border-0 bg-gradient-to-br from-background to-muted/20 hover:shadow-xl transition-shadow duration-300 pb-4">
             <CardHeader className="items-center pb-0 h-[80px] flex flex-col justify-center">
                 <CardTitle className="text-xl font-bold text-center">{title}</CardTitle>
                 {description && <CardDescription className="text-center">{description}</CardDescription>}
             </CardHeader>
 
-            <CardContent className="flex-1 flex flex-col">
+            <CardContent className="flex-1 flex flex-col px-2">
                 <ChartContainer config={chartConfig} className="w-full flex-1">
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart
@@ -110,7 +123,7 @@ export function CustomBarChart({ title, description, data }: BarChartCardProps) 
                                 top: 20,
                                 right: 20,
                                 left: 10,
-                                bottom: 20,
+                                bottom: 100,
                             }}
                         >
                             <CartesianGrid vertical={false} strokeDasharray="3 3" />
@@ -121,18 +134,10 @@ export function CustomBarChart({ title, description, data }: BarChartCardProps) 
                             <Tooltip content={<ChartTooltipContent />} />
 
                             <Bar dataKey="value" radius={[6, 6, 0, 0]}>
-                                {/* vertical item name inside bars */}
-                                <LabelList dataKey="name" content={<VerticalNameLabel />} className="" />
-
-                                {/* value on top */}
-                                {!isMobile && (
-                                    <LabelList
-                                        dataKey="value"
-                                        position="top"
-                                        className="fill-foreground"
-                                        fontSize={12}
-                                    />
-                                )}
+                                {/* vertical item value inside bars */}
+                                <LabelList dataKey="value" content={<VerticalValueLabel />} className="" />
+                                {/* name in below */}
+                                <LabelList dataKey="name" content={<VerticalBottomLabel />} />
 
                                 {chartData.map((entry) => (
                                     <Cell key={`cell-${entry.id}`} fill={entry.fill} />
@@ -142,15 +147,6 @@ export function CustomBarChart({ title, description, data }: BarChartCardProps) 
                     </ResponsiveContainer>
                 </ChartContainer>
             </CardContent>
-
-            <CardFooter className="flex-col items-start gap-2 text-sm">
-                <div className="flex gap-2 leading-none font-medium">
-                    Total Amount: {total.toLocaleString()} <TrendingUp className="h-4 w-4" />
-                </div>
-                <div className="text-muted-foreground leading-none">
-                    Showing top {chartData.length} items
-                </div>
-            </CardFooter>
         </Card>
     )
 }
