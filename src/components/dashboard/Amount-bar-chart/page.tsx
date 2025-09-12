@@ -33,12 +33,12 @@ function AmountBarChart() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
         <CustomBarChart
           title="Top 10 by Amount for Today"
-          description="sales by amount for today"
+          description="sales by amount for Today"
           data={totalAmount}
         />
         <CustomBarChart
           title="Top 10 by Amount This Month"
-          description="sales by amount for this month"
+          description="sales by amount for this Month"
           data={totalAmountThisMount}
         />
       </div>
