@@ -9,24 +9,23 @@ export default function OrderList() {
   const [orderDetail, setOrderDetail] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchOrderDetailData = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get('/api/dashboard/orderlist');
-      setOrderDetail(response.data[0].get_order_list_as_json);
-    } catch (error) {
-      console.error("Error fetching Order Data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchOrderDetailData = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get('/api/dashboard/orderlist');
+        setOrderDetail(response.data[0].get_order_list_as_json);
+      } catch (error) {
+        console.error("Error fetching Order Data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchOrderDetailData();
   }, []);
 
-  return (
-    <div className="w-full h-full overflow-auto ">
+  return ( 
+    <div className="w-full h-full overflow-auto  pb-10">
       {loading ? (
         <div className="w-full min-h-min flex items-center justify-center text-gray-500">
           Loading...
