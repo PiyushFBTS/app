@@ -6,19 +6,13 @@ export async function PUT(request: NextRequest) {
 
         const body = await request.json();
         if (!pool) {
-            return NextResponse.json(
-                { error: "Database connection not available" },
-                { status: 500 }
-            );
+            return NextResponse.json({ error: "Database connection not available" }, { status: 500 });
         }
 
         const { order_id } = body;
 
         if (!Array.isArray(order_id) || order_id.length === 0) {
-            return NextResponse.json(
-                { message: "No IDs provided" },
-                { status: 400 }
-            );
+            return NextResponse.json({ message: "No IDs provided" }, { status: 400 });
         }
 
         // 🔎 Step 1: Check if all IDs exist
@@ -26,7 +20,7 @@ export async function PUT(request: NextRequest) {
             SELECT order_id 
             FROM "OOMiddleware".order_header
             WHERE order_id = ANY($1::bigint[])`;
-            
+
         const existingResult = await pool.query(existingQuery, [order_id]);
         const existingIds = existingResult.rows.map(r => r.order_id);
 

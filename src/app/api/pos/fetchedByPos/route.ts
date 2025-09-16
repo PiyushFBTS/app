@@ -37,19 +37,19 @@ export async function PUT(request: NextRequest) {
         }
 
         // 🔎 Step 2: Check if already Fetched
-        const alreadyProcessedQuery = `
+        const alreadyFetchedQuery = `
                 SELECT order_id 
                 FROM "OOMiddleware".order_header
                 WHERE order_id = ANY($1::bigint[])
                 AND fetched_by_pos = 'Y' `;
 
-        const alreadyProcessedResult = await pool.query(alreadyProcessedQuery, [order_id]);
+        const alreadyFetchedResult = await pool.query(alreadyFetchedQuery, [order_id]);
 
-        if (alreadyProcessedResult.rows.length > 0) {
+        if (alreadyFetchedResult.rows.length > 0) {
             return NextResponse.json(
                 {
-                    error: "Some orders are already processed at POS",
-                    alreadyProcessedOrders: alreadyProcessedResult.rows.map(r => r.order_id),
+                    error: "Some orders are already fetched at POS",
+                    alreadyfetchedOrders: alreadyFetchedResult.rows.map(r => r.order_id),
                 },
                 { status: 400 }
             );
@@ -58,7 +58,7 @@ export async function PUT(request: NextRequest) {
         // 🔎 Step 3: update the table
 
         const currentTime = new Date();
-        const processed = "Y";
+        const fetched = "Y";
 
         const query = `
                 UPDATE "OOMiddleware".order_header
@@ -66,7 +66,7 @@ export async function PUT(request: NextRequest) {
                     "fetched_by_pos_Time" = $2
                 WHERE order_id = ANY($3::bigint[]) `;
 
-        const values = [processed, currentTime, order_id];
+        const values = [fetched, currentTime, order_id];
 
         await pool.query(query, values);
 
