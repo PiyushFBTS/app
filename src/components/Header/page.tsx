@@ -53,7 +53,7 @@ export function Header() {
 
           {/* User Management - Hidden on mobile, shown on tablet+ */}
           {
-            user.user_code === 1 && <div className="hidden md:block">
+            user.user_code === 1 && <div className="">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="sm" className="gap-2">
