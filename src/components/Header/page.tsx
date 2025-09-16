@@ -11,9 +11,11 @@ import { signOut } from "next-auth/react"
 import Link from "next/link"
 import { useSelector } from "react-redux"
 import type { RootState } from "@/store"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 export function Header() {
   const user = useSelector((state: RootState) => state.user)
+  const isMobile = useIsMobile();
 
   const handleLogout = async () => {
     await signOut({
@@ -39,12 +41,15 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-2 md:gap-4">
+          {
 
-          <div className="space-y-1">
-            <p>
-              <strong> Hello ,</strong> {user.first_name} {user.last_name}
-            </p>
-          </div>
+            ! isMobile && <div className="space-y-1">
+              <p>
+                <strong> Hello ,</strong> {user.first_name} {user.last_name}
+              </p>
+            </div>
+          }
+
 
           {/* User Management - Hidden on mobile, shown on tablet+ */}
           {
