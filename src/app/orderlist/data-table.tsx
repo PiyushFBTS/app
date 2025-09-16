@@ -51,17 +51,17 @@ export function OrderDetailTable<TData extends OrderDeatilList, TValue>({ column
     })
 
     return (
-        <div className="flex flex-col h-full justify-between min-h-[calc(100vh-120px)] gap-6 p-6">
+        <div className="flex flex-col h-full justify-between min-h-[calc(100vh-120px)] gap-6 pb-6  md:pb-0">
             {/* Header Section */}
-            <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-xl p-8 text-white shadow-lg">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div>
-                        <h1 className="text-4xl font-bold mb-2">Order Details</h1>                       
-                    </div>
+            <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-xl p-4 text-white shadow-lg">
+                <div className="flex flex-row justify-between">
+
+                    <h1 className="text-xl md:text-4xl font-bold content-center">Order Details</h1>
+
                     <div className="flex gap-3">
                         <Button variant="secondary" className="bg-white/10 hover:bg-white/20 text-white border-white/20 cursor-pointer" onClick={() => window.location.reload()}>
                             <RefreshCw className="h-4 w-4 mr-2" />
-                            Refresh
+                            {!isMobile && 'Refresh'}
                         </Button>
 
                     </div>
@@ -179,9 +179,9 @@ export function OrderDetailTable<TData extends OrderDeatilList, TValue>({ column
 
             {/* Pagination Section */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div className="flex items-center gap-6">
-                        <div className="flex items-center space-x-2">
+                <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-4">
+                    <div className="flex items-center gap-6 md:w-auto w-full">
+                        <div className="flex items-center space-x-2 md:w-auto md:justify-start w-full justify-between">
                             <p className="text-sm font-medium text-gray-700">Rows per page</p>
                             <Select
                                 value={`${table.getState().pagination.pageSize}`}
@@ -202,14 +202,14 @@ export function OrderDetailTable<TData extends OrderDeatilList, TValue>({ column
                             </Select>
                         </div>
 
-                        <div className="text-sm text-gray-600">
+                        <div className="text-sm text-gray-600 hidden md:flex">
                             Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} to{" "}
                             {Math.min((table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize, table.getFilteredRowModel().rows.length)} of{" "}
                             {table.getFilteredRowModel().rows.length} entries
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 md:w-auto md:justify-start w-full justify-between">
                         <div className="flex items-center justify-center text-sm font-medium text-gray-700 bg-gray-50 px-3 py-2 rounded-lg">
                             Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
                         </div>
