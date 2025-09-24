@@ -243,7 +243,7 @@ export async function POST(req: Request) {
     ]
     await pool.query(orderStatusQuery, statusValues)
 
-    return NextResponse.json({ message: 'Order inserted successfully' }, { status: 201 })
+    return NextResponse.json({ message: 'Order inserted successfully' }, { status: 200 })
 
   } catch (error) {
     console.error('POST /AzureToPOS error:', error)
