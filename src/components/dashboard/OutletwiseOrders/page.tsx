@@ -67,7 +67,7 @@ export function OutletwiseOrders() {
                                 }}
                             >
                                 <CartesianGrid horizontal={false} />
-                                <XAxis type="number" hide domain={[0, 40]} tickCount={4}  />
+                                <XAxis type="number" hide domain={[0, 100]} tickCount={10}  />
                                 <YAxis
                                     dataKey="col2"
                                     type="category"

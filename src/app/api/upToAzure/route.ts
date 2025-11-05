@@ -180,38 +180,66 @@ export async function POST(req: Request) {
         lineNo++;
       }
 
-      if (item.options_to_add && item.options_to_add?.length > 0) {
-        let dummyBaseLineNo = 0;
+      if (item.options_to_add && item.options_to_add.length > 0) {
+        if (isDummyItem) {
+          // 🔹 Step 1: Find "Select Size" option to make it the parent
+          const selectSizeOption = item.options_to_add.find(
+            (opt: { group: { title: string; }; }) =>
+              opt.group?.title?.trim()?.toLowerCase() === "select size"
+          );
 
-        for (const [index, subItem] of item.options_to_add.entries()) {
-          if (isDummyItem && index === 0) {
-            // First option under DUMMY item becomes main line
+          let parentLineNo = 0;
+          let parentItem = selectSizeOption || item.options_to_add[0]; // fallback to first
+
+          // 🔹 Step 2: Insert the "Select Size" (or first) as parent
+          await insertOrderLine({
+            item,
+            subItem: parentItem,
+            details,
+            lineNo,
+            parentLineNo: 0,
+            indent: 0,
+          });
+
+          parentLineNo = lineNo;
+          itemIdToLineNo.set(parentItem.id, lineNo);
+          lineNo++;
+
+          // 🔹 Step 3: Insert all other options as children
+          for (const subItem of item.options_to_add) {
+            if (subItem.id === parentItem.id) continue;
+
             await insertOrderLine({
               item,
               subItem,
               details,
               lineNo,
-              parentLineNo: 0,
-              indent: 0,
+              parentLineNo,
+              indent: 1,
             });
-            dummyBaseLineNo = lineNo;
+
             itemIdToLineNo.set(subItem.id, lineNo);
             lineNo++;
-          } else {
-            // Options under DUMMY's first option or normal item
-            const parentLineNo = isDummyItem
-              ? dummyBaseLineNo
-              : itemIdToLineNo.get(item.id) || 0;
-            const indent = 1;
 
+          }
+        } else {
+          // 🔹 Step 4: Normal item case — insert all options as children
+          const parentLineNo = itemIdToLineNo.get(item.id) || 0;
+          for (const subItem of item.options_to_add) {
             await insertOrderLine({
-              item, subItem, details, lineNo, parentLineNo, indent
+              item,
+              subItem,
+              details,
+              lineNo,
+              parentLineNo,
+              indent: 1,
             });
             itemIdToLineNo.set(subItem.id, lineNo);
             lineNo++;
           }
         }
       }
+
     }
 
 
