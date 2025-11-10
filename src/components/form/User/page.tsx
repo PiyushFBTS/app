@@ -49,7 +49,7 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
     useEffect(() => {
         setIsLoading(true)
         try {
-            axios.get("/api/common/getUserRole").then((rolesRes) => {
+            axios.get("/api/user-api/getUserRole").then((rolesRes) => {
                 setRoles(rolesRes.data)
                 setIsLoading(false)
             })

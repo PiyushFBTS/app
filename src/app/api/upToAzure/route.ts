@@ -134,7 +134,7 @@ export async function POST(req: Request) {
         parentLineNo,
         subItem.merchant_id,
         subItem.title,
-        subItem.quantity,
+       isMainItem ? item.quantity : item.quantity * (subItem.quantity || 1),
         subItem.price,
         discount,
         total,
