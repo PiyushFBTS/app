@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 
 export default function OrderList() {
   const [orderDetail, setOrderDetail] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchOrderDetailData = async () => {
@@ -24,17 +24,26 @@ export default function OrderList() {
     fetchOrderDetailData();
   }, []);
 
-  return ( 
-    <div className="w-full h-full overflow-auto  pb-10">
-      {loading ? (
-        <div className="w-full min-h-min flex items-center justify-center text-gray-500">
-          Loading...
+  if (loading) {
+    return (
+      <div className="w-full h-full p-6 space-y-4">
+        <div className="animate-pulse space-y-4">
+          {/* Header skeleton */}
+          <div className="h-12 bg-gray-200 rounded-lg w-full"></div>
+          {/* Table rows skeleton */}
+          {[...Array(8)].map((_, i) => (
+            <div key={i} className="h-16 bg-gray-100 rounded-lg w-full"></div>
+          ))}
         </div>
-      ) : (
-        <div className="w-full h-full overflow-x-auto overflow-y-auto">
-          <OrderDetailTable columns={columns} data={orderDetail} />
-        </div>
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full h-full overflow-auto pb-10">
+      <div className="w-full h-full overflow-x-auto overflow-y-auto">
+        <OrderDetailTable columns={columns} data={orderDetail} />
+      </div>
     </div>
   );
 }

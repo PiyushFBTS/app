@@ -2,106 +2,133 @@
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent } from "@/components/ui/card"
 import { FileText, Package, CheckCircle } from "lucide-react"
-import axios from 'axios';
-import { OrderTotal, POSFetchedOrdersType, POSDeliveredOrdersType } from "@/types/dashboard.type"
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"
+
+//type for your card data
+interface CardData {
+  col1: string
+  col2: string
+}
+
+// Skeleton Card Component
+function CardSkeleton() {
+  return (
+    <Card className="p-6 bg-white shadow-md border border-gray-200 h-full rounded-2xl">
+      <CardContent className="p-0">
+        <div className="flex items-start justify-between">
+          <div className="flex-shrink-0">
+            <div className="w-12 h-12 bg-gray-200 rounded-full animate-pulse"></div>
+          </div>
+          <div className="flex-1 ml-4 space-y-3">
+            <div className="h-8 bg-gray-200 rounded w-20 animate-pulse"></div>
+            <div className="h-5 bg-gray-200 rounded w-32 animate-pulse"></div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+// Chart Skeleton Components
+export function ChartSkeleton({ height = "h-80" }: { height?: string }) {
+  return (
+    <Card className="p-6 bg-white shadow-md border border-gray-200 rounded-2xl">
+      <CardContent className="p-0 space-y-4">
+        <div className="h-6 bg-gray-200 rounded w-48 animate-pulse"></div>
+        <div className={`${height} bg-gray-100 rounded animate-pulse`}></div>
+      </CardContent>
+    </Card>
+  )
+}
 
 function ItemCard() {
-    const [orderDetail, setOrderDetail] = useState<OrderTotal[]>([])
-    const [POSFetchedOrders, setPOSFetchedOrders] = useState<POSFetchedOrdersType[]>([])
-    const [POSDeliveredOrders, setPOSDeliveredOrders] = useState<POSDeliveredOrdersType[]>([])
-    const router = useRouter();
+  const [orderDetail, setOrderDetail] = useState<CardData[]>([])
+  const [POSFetchedOrders, setPOSFetchedOrders] = useState<CardData[]>([])
+  const [POSDeliveredOrders, setPOSDeliveredOrders] = useState<CardData[]>([])
+  const [loading, setLoading] = useState(true)
+  const router = useRouter()
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const res = await axios.get("api/dashboard/cards/NoOfOrders")
-                setOrderDetail(res.data)
-            } catch (error) {
-                console.error('Error fetching order details:', error)
-            }
-        }
-
-        const fetchPOSFetchedOrders = async () => {
-            try {
-                const res = await axios.get("api/dashboard/cards/POSFetchedOrders")
-                setPOSFetchedOrders(res.data)
-            } catch (error) {
-                console.error('Error fetching POS fetched orders:', error)
-            }
-        }
-
-        const fetchPOSDeliveredOrders = async () => {
-            try {
-                // Fixed: Changed endpoint to POSDeliveredOrders instead of POSFetchedOrders
-                const res = await axios.get("api/dashboard/cards/POSDeliveredOrders")
-                setPOSDeliveredOrders(res.data)
-            } catch (error) {
-                console.error('Error fetching POS delivered orders:', error)
-            }
-        }
-
-        fetchData()
-        fetchPOSFetchedOrders()
-        fetchPOSDeliveredOrders()
-    }, [])
-
-    // Helper function to get appropriate icon based on card title
-    const getCardIcon = (title: string) => {
-        if (title.toLowerCase().includes('delivered')) {
-            return <CheckCircle className="w-6 h-6 text-indigo-500" />
-        } else if (title.toLowerCase().includes('fetched') || title.toLowerCase().includes('orders')) {
-            return <FileText className="w-6 h-6 text-indigo-500" />
-        } else {
-            return <Package className="w-6 h-6 text-indigo-500" />
-        }
+  useEffect(() => {
+    const fetchAllData = async () => {
+      setLoading(true)
+      try {
+        const [ordersRes, fetchedRes, deliveredRes] = await Promise.all([
+          fetch("api/dashboard/cards/NoOfOrders").then(r => r.json()),
+          fetch("api/dashboard/cards/POSFetchedOrders").then(r => r.json()),
+          fetch("api/dashboard/cards/POSDeliveredOrders").then(r => r.json())
+        ])
+        
+        setOrderDetail(ordersRes)
+        setPOSFetchedOrders(fetchedRes)
+        setPOSDeliveredOrders(deliveredRes)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      } finally {
+        setLoading(false)
+      }
     }
 
-    // Combine all card data into one array
-    const allCards = [
-        ...orderDetail,
-        ...POSFetchedOrders,
-        ...POSDeliveredOrders
-    ];
+    fetchAllData()
+  }, [])
 
+  const getCardIcon = (title: string) => {
+    if (title.toLowerCase().includes('delivered')) {
+      return <CheckCircle className="w-6 h-6 text-indigo-500" />
+    } else if (title.toLowerCase().includes('fetched') || title.toLowerCase().includes('orders')) {
+      return <FileText className="w-6 h-6 text-indigo-500" />
+    } else {
+      return <Package className="w-6 h-6 text-indigo-500" />
+    }
+  }
+
+  if (loading) {
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 m-4">
-            {allCards.map((data, index) => {
-                return (
-                    <div key={index} className="w-full">
-                        <Card
-                            className={`p-6 bg-white shadow-md border border-gray-200 h-full rounded-2xl hover:shadow-xl transition-all duration-300 hover:bg-indigo-50 ${
-                                data.col1 === "Todays Orders" ? "cursor-pointer" : ""
-                            }`}
-                            onClick={data.col1 === "Todays Orders" ? () => router.push("/orderlist") : undefined}
-                        >
-                            <CardContent className="p-0">
-                                <div className="flex items-start justify-between">
-                                    {/* Icon Section */}
-                                    <div className="flex-shrink-0">
-                                        <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                                            {getCardIcon(data.col1)}
-                                        </div>
-                                    </div>
-                                    <div className="flex-1 ml-4">
-                                        {/* Main Number */}
-                                        <div className="text-3xl font-bold text-gray-900 mb-1">
-                                            {data.col2}
-                                        </div>
-
-                                        {/* Title */}
-                                        <div className="text-gray-600 font-medium mb-3">
-                                            {data.col1}
-                                        </div>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </div>
-                )
-            })}
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 m-4">
+        {[...Array(4)].map((_, index) => (
+          <CardSkeleton key={index} />
+        ))}
+      </div>
     )
+  }
+
+  const allCards = [
+    ...orderDetail,
+    ...POSFetchedOrders,
+    ...POSDeliveredOrders
+  ]
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 m-4">
+      {allCards.map((data, index) => (
+        <div key={index} className="w-full">
+          <Card
+            className={`p-6 bg-white shadow-md border border-gray-200 h-full rounded-2xl hover:shadow-xl transition-all duration-300 hover:bg-indigo-50 ${
+              data.col1 === "Todays Orders" ? "cursor-pointer" : ""
+            }`}
+            onClick={data.col1 === "Todays Orders" ? () => router.push("/orderlist") : undefined}
+          >
+            <CardContent className="p-0">
+              <div className="flex items-start justify-between">
+                <div className="flex-shrink-0">
+                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                    {getCardIcon(data.col1)}
+                  </div>
+                </div>
+                <div className="flex-1 ml-4">
+                  <div className="text-3xl font-bold text-gray-900 mb-1">
+                    {data.col2}
+                  </div>
+                  <div className="text-gray-600 font-medium mb-3">
+                    {data.col1}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      ))}
+    </div>
+  )
 }
 
 export default ItemCard
