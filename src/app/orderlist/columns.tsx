@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Package, Store, User, Calendar, CreditCard, Phone, Mail, MapPin, Truck, Clock, CheckCircle, XCircle, AlertCircle, DollarSign } from "lucide-react";
 import { OrderDeatilList } from "@/types/orderDeatilList.type";
+import Link from "next/link";
 
 const formatCurrency = (amount: number) =>
   `₹ ${amount?.toLocaleString() || 0}`;
@@ -97,14 +98,16 @@ export const columns: ColumnDef<OrderDeatilList>[] = [
         <ArrowUpDown className="ml-2 h-3 w-3" />
       </Button>
     ),
-    cell: ({ row }) => (
-      <div className="flex items-center gap-2">
-        {/* <div className="w-2 h-2 bg-blue-500 rounded-full"></div> */}
-        <span className="flex justify-center font-bold text-blue-900 hover:text-blue-700 cursor-pointer">
-          {row.original.order_id}
-        </span>
-      </div>
-    ),
+    cell: ({ row }) => {
+      const value = row.original.order_id;
+      return (
+        <div className="text-left">
+          <Link href={`/orderlist/${value}`} className="text-blue-600 hover:underline">
+            {value}
+          </Link>
+        </div>
+      );
+    }
   },
   {
     accessorKey: "store_name",
