@@ -51,13 +51,17 @@ function ItemCard() {
   useEffect(() => {
     const fetchAllData = async () => {
       setLoading(true)
+      const url = process.env.NEXT_PUBLIC_API_URL
+      console.log("url", url)
       try {
         const [ordersRes, fetchedRes, deliveredRes] = await Promise.all([
-          fetch("api/dashboard/cards/NoOfOrders").then(r => r.json()),
-          fetch("api/dashboard/cards/POSFetchedOrders").then(r => r.json()),
-          fetch("api/dashboard/cards/POSDeliveredOrders").then(r => r.json())
+          fetch(`${url}/api/dashboard/noOfOrders`).then(r => r.json()),
+          fetch(`${url}/api/dashboard/posFetchedOrders`).then(r => r.json()),
+          fetch(`${url}/api/dashboard/posDeliveredOrders`).then(r => r.json())
         ])
+        console.log(`${url}/api/dashboard/cards/NoOfOrders`);
         
+
         setOrderDetail(ordersRes)
         setPOSFetchedOrders(fetchedRes)
         setPOSDeliveredOrders(deliveredRes)
@@ -102,9 +106,8 @@ function ItemCard() {
       {allCards.map((data, index) => (
         <div key={index} className="w-full">
           <Card
-            className={`p-6 bg-white shadow-md border border-gray-200 h-full rounded-2xl hover:shadow-xl transition-all duration-300 hover:bg-indigo-50 ${
-              data.col1 === "Todays Orders" ? "cursor-pointer" : ""
-            }`}
+            className={`p-6 bg-white shadow-md border border-gray-200 h-full rounded-2xl hover:shadow-xl transition-all duration-300 hover:bg-indigo-50 ${data.col1 === "Todays Orders" ? "cursor-pointer" : ""
+              }`}
             onClick={data.col1 === "Todays Orders" ? () => router.push("/orderlist") : undefined}
           >
             <CardContent className="p-0">
