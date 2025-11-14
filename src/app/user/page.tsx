@@ -9,10 +9,12 @@ import { UserTable } from './data-table';
 export default function UserDataTable() {
   const [userData, setUserData] = useState([]);
   const url = process.env.NEXT_PUBLIC_API_URL
-  
+
   const fetchUserData = async () => {
     try {
       const response = await axios.get(`${url}/api/userRole`)
+      console.log("urserRole->url", `${url}/api/userRole`);
+
       setUserData(response.data)
     } catch (error) {
       console.error("error fetch in user", error);

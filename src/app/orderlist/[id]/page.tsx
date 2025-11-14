@@ -74,6 +74,8 @@ export default function OrderDetails() {
 
         setIsLoading(true);
         const response = await axios.get(`${url}/api/dashboard/getOrderById/${id}`);
+        console.log("orderby-id->url", `${url}/api/dashboard/getOrderById/${id}`);
+
         let data = response.data;
         if (Array.isArray(data)) data = data[0];
         setOrder(data as OrderType);

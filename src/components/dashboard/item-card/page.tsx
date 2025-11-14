@@ -59,8 +59,11 @@ function ItemCard() {
           fetch(`${url}/api/dashboard/posFetchedOrders`).then(r => r.json()),
           fetch(`${url}/api/dashboard/posDeliveredOrders`).then(r => r.json())
         ])
+        console.log("noOfOrders", `${url}/api/dashboard/noOfOrders`);
+        console.log("posFetchedOrders", `${url}/api/dashboard/posFetchedOrders`);
+        console.log("posDeliveredOrders", `${url}/api/dashboard/posDeliveredOrders`);
 
-        
+
 
         setOrderDetail(ordersRes)
         setPOSFetchedOrders(fetchedRes)

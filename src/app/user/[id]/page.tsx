@@ -29,6 +29,8 @@ export default function UserDetail() {
       try {
         setIsLoading(true)
         const response = await axios.get(`${url}/api/user/${id}`)
+        console.log("user->url", `${url}/api/user/${id}`);
+
         setUserData(response.data)
       } catch (error) {
         console.error("Error fetching store", error)

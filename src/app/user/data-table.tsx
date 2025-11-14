@@ -32,12 +32,13 @@ export function UserTable<TData extends UserData, TValue>({ columns, data }: Dat
         const selectedRows = table.getSelectedRowModel().rows
         const idsToDelete = selectedRows.map((row) => row.original.user_code)
         const url = process.env.NEXT_PUBLIC_API_URL
-        
+
         try {
             const res = await axios.post(`${url}api/user-api/user/deleteUser`, {
                 ids: idsToDelete,
             });
-         
+            console.log("delete->url", `${url}api/user-api/user/deleteUser`);
+
             toast.success(res.data.message)
             window.location.reload()
         } catch (err) {
