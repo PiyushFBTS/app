@@ -39,10 +39,12 @@ function AmountBarChart() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      const url = process.env.NEXT_PUBLIC_API_URL
+      
       try {
         const [resAmount, resAmountThisMonth] = await Promise.all([
-          axios.get("/api/dashboard/pie-chart/Todays/TodaysTop10Amount"),
-          axios.get("/api/dashboard/pie-chart/Monthly/ThisMonthTodaysTop10Amount")
+          axios.get(`${url}/api/dashboard/pie-chart/today/todaysTop10Amount`),
+          axios.get(`${url}/api/dashboard/pie-chart/monthly/thisMonthTodaysTop10Amount`)
         ]);
 
         setTotalAmount(resAmount.data);

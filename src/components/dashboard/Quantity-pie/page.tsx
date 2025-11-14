@@ -25,10 +25,12 @@ function QuantityPieData() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      const url = process.env.NEXT_PUBLIC_API_URL
+      
       try {
         const [resQty, resQtyThisMonth] = await Promise.all([
-          axios.get("/api/dashboard/pie-chart/Todays/TodaysTop10Qty"),
-          axios.get("/api/dashboard/pie-chart/Monthly/ThisMonthTodaysTop10Qty")
+          axios.get(`${url}/api/dashboard/pie-chart/today/todaysTop10Qty`),
+          axios.get(`${url}/api/dashboard/pie-chart/monthly/thisMonthTodaysTop10Qty`)
         ]);
 
         setTotalQty(resQty.data);

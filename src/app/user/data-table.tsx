@@ -31,8 +31,10 @@ export function UserTable<TData extends UserData, TValue>({ columns, data }: Dat
     const handleDeleteSelected = async () => {
         const selectedRows = table.getSelectedRowModel().rows
         const idsToDelete = selectedRows.map((row) => row.original.user_code)
+        const url = process.env.NEXT_PUBLIC_API_URL
+        
         try {
-            const res = await axios.post("/api/user-api/user/deleteUser", {
+            const res = await axios.post(`${url}api/user-api/user/deleteUser`, {
                 ids: idsToDelete,
             });
          

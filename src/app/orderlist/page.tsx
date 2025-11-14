@@ -12,8 +12,10 @@ export default function OrderList() {
   useEffect(() => {
     const fetchOrderDetailData = async () => {
       setLoading(true);
+      const url = process.env.NEXT_PUBLIC_API_URL
+
       try {
-        const response = await axios.get('/api/dashboard/orderlist');
+        const response = await axios.get(`${url}/api/dashboard/orderList`);
         setOrderDetail(response.data[0].get_order_list_as_json);
       } catch (error) {
         console.error("Error fetching Order Data:", error);

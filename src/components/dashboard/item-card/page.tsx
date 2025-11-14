@@ -52,14 +52,14 @@ function ItemCard() {
     const fetchAllData = async () => {
       setLoading(true)
       const url = process.env.NEXT_PUBLIC_API_URL
-      console.log("url", url)
+
       try {
         const [ordersRes, fetchedRes, deliveredRes] = await Promise.all([
           fetch(`${url}/api/dashboard/noOfOrders`).then(r => r.json()),
           fetch(`${url}/api/dashboard/posFetchedOrders`).then(r => r.json()),
           fetch(`${url}/api/dashboard/posDeliveredOrders`).then(r => r.json())
         ])
-        console.log(`${url}/api/dashboard/cards/NoOfOrders`);
+
         
 
         setOrderDetail(ordersRes)

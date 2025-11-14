@@ -48,8 +48,10 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
     // Load roles on component mount
     useEffect(() => {
         setIsLoading(true)
+        const url = process.env.NEXT_PUBLIC_API_URL
+        
         try {
-            axios.get("/api/user-api/getUserRole").then((rolesRes) => {
+            axios.get(`${url}/api/userRole/list`).then((rolesRes) => {
                 setRoles(rolesRes.data)
                 setIsLoading(false)
             })
@@ -88,6 +90,7 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
 
     const onSubmit = async (data: UserFormValues) => {
         setIsLoading(true)
+        const url = process.env.NEXT_PUBLIC_API_URL
         try {
             // Prepare data for submission
             const submitData = {
@@ -100,7 +103,7 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
                 delete submitData.password
             }
 
-            const endpoint = isEditMode ? `/api/user-api/user/updateUser` : "/api/user-api/user/createUser"
+            const endpoint = isEditMode ? `${url}/api/user/updateUser` : `${url}/api/user/createUser`
             const method = isEditMode ? "PUT" : "POST"
 
             const response = await fetch(endpoint, {

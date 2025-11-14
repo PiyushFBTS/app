@@ -70,8 +70,10 @@ export default function OrderDetails() {
 
     const fetchOrder = async () => {
       try {
+        const url = process.env.NEXT_PUBLIC_API_URL
+
         setIsLoading(true);
-        const response = await axios.get(`/api/dashboard/orderlist/${id}`);
+        const response = await axios.get(`${url}/api/dashboard/getOrderById/${id}`);
         let data = response.data;
         if (Array.isArray(data)) data = data[0];
         setOrder(data as OrderType);

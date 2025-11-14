@@ -8,9 +8,11 @@ import { UserTable } from './data-table';
 
 export default function UserDataTable() {
   const [userData, setUserData] = useState([]);
+  const url = process.env.NEXT_PUBLIC_API_URL
+  
   const fetchUserData = async () => {
     try {
-      const response = await axios.get('/api/user-api/user/userData')
+      const response = await axios.get(`${url}/api/userRole`)
       setUserData(response.data)
     } catch (error) {
       console.error("error fetch in user", error);
@@ -22,9 +24,9 @@ export default function UserDataTable() {
 
   return (
     // <RoleGuard allowedRoles={["Super Admin", "OU Manager"]}>
-      <div className="container mx-auto py-8 px-4 w-max-[550px] h-[calc(100vh-65px)]">
-        <UserTable columns={columns} data={userData} />
-      </div>
+    <div className="container mx-auto py-8 px-4 w-max-[550px] h-[calc(100vh-65px)]">
+      <UserTable columns={columns} data={userData} />
+    </div>
     // </RoleGuard>
   );
 }

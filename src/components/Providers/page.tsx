@@ -14,9 +14,10 @@ function AppInit({ children }: { children: ReactNode }) {
   useEffect(() => {
     const fetchUserDetails = async () => {
       if (status !== "authenticated" || !session?.user?.user_code) return;
-
+      const url = process.env.NEXT_PUBLIC_API_URL
+      
       try {
-        const response = await axios.get(`/api/user-api/user/userData/${session.user.user_code}`);
+        const response = await axios.get(`${url}/api/user/${session.user.user_code}`);
         const data = response.data;
 
         const {
