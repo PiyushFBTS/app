@@ -53,7 +53,7 @@ export function OutletwiseOrders() {
     const fetchData = async () => {
       setLoading(true)
       try {
-        const res = await axios.get("api/dashboard/outletwiseOrders")
+        const res = await axios.get("/api/dashboard/outletwiseOrders")
         setOrder(res.data)
       } catch (err) {
         console.error("Error fetching Outletwise Orders:", err)
