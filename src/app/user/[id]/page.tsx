@@ -28,8 +28,8 @@ export default function UserDetail() {
       const url = process.env.NEXT_PUBLIC_API_URL
       try {
         setIsLoading(true)
-        const response = await axios.get(`${url}/api/user/${id}`)
-        console.log("user->url", `${url}/api/user/${id}`);
+        const response = await axios.get(`${url}/user/${id}`)
+        console.log("user->url", `${url}/user/${id}`);
 
         setUserData(response.data)
       } catch (error) {

@@ -55,7 +55,7 @@ export function OutletwiseOrders() {
       const url = process.env.NEXT_PUBLIC_API_URL
 
       try {
-        const res = await axios.get(`${url}/api/dashboard/outletwiseOrders`)
+        const res = await axios.get(`${url}/dashboard/outletwiseOrders`)
         setOrder(res.data)
       } catch (err) {
         console.error("Error fetching Outletwise Orders:", err)

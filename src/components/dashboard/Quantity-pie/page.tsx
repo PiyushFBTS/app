@@ -29,11 +29,11 @@ function QuantityPieData() {
 
       try {
         const [resQty, resQtyThisMonth] = await Promise.all([
-          axios.get(`${url}/api/dashboard/pie-chart/today/todaysTop10Qty`),
-          axios.get(`${url}/api/dashboard/pie-chart/monthly/thisMonthTodaysTop10Qty`)
+          axios.get(`${url}/dashboard/pie-chart/today/todaysTop10Qty`),
+          axios.get(`${url}/dashboard/pie-chart/monthly/thisMonthTodaysTop10Qty`)
         ]);
-        console.log("todaysTop10Qty", `${url}/api/dashboard/pie-chart/today/todaysTop10Qty`);
-        console.log("thisMonthTodaysTop10Qty", `${url}/api/dashboard/pie-chart/monthly/thisMonthTodaysTop10Qty`);
+        console.log("todaysTop10Qty", `${url}/dashboard/pie-chart/today/todaysTop10Qty`);
+        console.log("thisMonthTodaysTop10Qty", `${url}/dashboard/pie-chart/monthly/thisMonthTodaysTop10Qty`);
 
 
         setTotalQty(resQty.data);

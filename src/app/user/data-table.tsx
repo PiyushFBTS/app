@@ -34,10 +34,10 @@ export function UserTable<TData extends UserData, TValue>({ columns, data }: Dat
         const url = process.env.NEXT_PUBLIC_API_URL
 
         try {
-            const res = await axios.post(`${url}api/user-api/user/deleteUser`, {
+            const res = await axios.post(`${url}/user/deleteUser`, {
                 ids: idsToDelete,
             });
-            console.log("delete->url", `${url}api/user-api/user/deleteUser`);
+            console.log("delete->url", `${url}/user/deleteUser`);
 
             toast.success(res.data.message)
             window.location.reload()

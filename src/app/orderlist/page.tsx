@@ -15,8 +15,8 @@ export default function OrderList() {
       const url = process.env.NEXT_PUBLIC_API_URL
 
       try {
-        const response = await axios.get(`${url}/api/dashboard/orderList`);
-        console.log("orderlist->url", `${url}/api/dashboard/orderList`);
+        const response = await axios.get(`${url}/dashboard/orderList`);
+        console.log("orderlist->url", `${url}/dashboard/orderList`);
 
         setOrderDetail(response.data[0].get_order_list_as_json);
       } catch (error) {

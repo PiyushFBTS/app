@@ -73,8 +73,8 @@ export default function OrderDetails() {
         const url = process.env.NEXT_PUBLIC_API_URL
 
         setIsLoading(true);
-        const response = await axios.get(`${url}/api/dashboard/getOrderById/${id}`);
-        console.log("orderby-id->url", `${url}/api/dashboard/getOrderById/${id}`);
+        const response = await axios.get(`${url}/dashboard/getOrderById/${id}`);
+        console.log("orderby-id->url", `${url}/dashboard/getOrderById/${id}`);
 
         let data = response.data;
         if (Array.isArray(data)) data = data[0];

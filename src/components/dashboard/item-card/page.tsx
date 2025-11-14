@@ -55,13 +55,13 @@ function ItemCard() {
 
       try {
         const [ordersRes, fetchedRes, deliveredRes] = await Promise.all([
-          fetch(`${url}/api/dashboard/noOfOrders`).then(r => r.json()),
-          fetch(`${url}/api/dashboard/posFetchedOrders`).then(r => r.json()),
-          fetch(`${url}/api/dashboard/posDeliveredOrders`).then(r => r.json())
+          fetch(`${url}/dashboard/noOfOrders`).then(r => r.json()),
+          fetch(`${url}/dashboard/posFetchedOrders`).then(r => r.json()),
+          fetch(`${url}/dashboard/posDeliveredOrders`).then(r => r.json())
         ])
-        console.log("noOfOrders", `${url}/api/dashboard/noOfOrders`);
-        console.log("posFetchedOrders", `${url}/api/dashboard/posFetchedOrders`);
-        console.log("posDeliveredOrders", `${url}/api/dashboard/posDeliveredOrders`);
+        console.log("noOfOrders", `${url}/dashboard/noOfOrders`);
+        console.log("posFetchedOrders", `${url}/dashboard/posFetchedOrders`);
+        console.log("posDeliveredOrders", `${url}/dashboard/posDeliveredOrders`);
 
 
 

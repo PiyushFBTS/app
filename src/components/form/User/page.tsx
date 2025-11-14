@@ -51,7 +51,7 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
         const url = process.env.NEXT_PUBLIC_API_URL
         
         try {
-            axios.get(`${url}/api/userRole/list`).then((rolesRes) => {
+            axios.get(`${url}/userRole/list`).then((rolesRes) => {
                 setRoles(rolesRes.data)
                 setIsLoading(false)
             })
@@ -103,7 +103,7 @@ export default function UserForm({ initialData, isEditMode = false }: Props) {
                 delete submitData.password
             }
 
-            const endpoint = isEditMode ? `${url}/api/user/updateUser` : `${url}/api/user/createUser`
+            const endpoint = isEditMode ? `${url}/user/updateUser` : `${url}/user/createUser`
             const method = isEditMode ? "PUT" : "POST"
 
             const response = await fetch(endpoint, {

@@ -43,11 +43,11 @@ function AmountBarChart() {
 
       try {
         const [resAmount, resAmountThisMonth] = await Promise.all([
-          axios.get(`${url}/api/dashboard/pie-chart/today/todaysTop10Amount`),
-          axios.get(`${url}/api/dashboard/pie-chart/monthly/thisMonthTodaysTop10Amount`)
+          axios.get(`${url}/dashboard/pie-chart/today/todaysTop10Amount`),
+          axios.get(`${url}/dashboard/pie-chart/monthly/thisMonthTodaysTop10Amount`)
         ]);
-        console.log("todaysTop10Amount",`${url}/api/dashboard/pie-chart/today/todaysTop10Amount`);
-        console.log("thisMonthTodaysTop10Amount",`${url}/api/dashboard/pie-chart/monthly/thisMonthTodaysTop10Amount`);
+        console.log("todaysTop10Amount",`${url}pi/dashboard/pie-chart/today/todaysTop10Amount`);
+        console.log("thisMonthTodaysTop10Amount",`${url}/dashboard/pie-chart/monthly/thisMonthTodaysTop10Amount`);
         
 
         setTotalAmount(resAmount.data);

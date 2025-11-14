@@ -17,7 +17,7 @@ function AppInit({ children }: { children: ReactNode }) {
       const url = process.env.NEXT_PUBLIC_API_URL
       
       try {
-        const response = await axios.get(`${url}/api/user/${session.user.user_code}`);
+        const response = await axios.get(`${url}/user/${session.user.user_code}`);
         const data = response.data;
 
         const {
