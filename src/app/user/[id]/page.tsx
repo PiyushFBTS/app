@@ -25,7 +25,7 @@ export default function UserDetail() {
     if (!id) return;
 
     const fetchUser = async () => {
-      const url = process.env.NEXT_PUBLIC_API_URL\
+      const url = process.env.NEXT_PUBLIC_API_URL
       try {
         setIsLoading(true)
         const response = await axios.get(`${url}/api/user/${id}`)
