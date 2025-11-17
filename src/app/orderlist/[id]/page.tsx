@@ -1,27 +1,12 @@
 "use client";
 
 import { useEffect, useState, FC } from "react";
-import {
-  ArrowLeft,
-  Package,
-  User,
-  CreditCard,
-  Monitor,
-  Plug,
-  ShoppingCart,
-} from "lucide-react";
-
+import { ArrowLeft, Package, User, CreditCard, Monitor, Plug, ShoppingCart } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { OrderType } from "@/types/orderDeatilList.type";
 import { Button } from "@/components/ui/button";
-
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 interface InfoCardProps {
   icon: FC<React.SVGProps<SVGSVGElement>>;
@@ -31,7 +16,8 @@ interface InfoCardProps {
 }
 
 const InfoCard: FC<InfoCardProps> = ({ icon: Icon, title, fields, order }) => (
-  <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+  <div className="rounded-xl border border-gray-200 bg-gradient-to-br from-white via-[#f7faff] to-[#eef7ff] shadow-lg">
+
     <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
       {fields.map(({ key, label, format }) => {
         const value = order[key];
@@ -49,7 +35,7 @@ const InfoCard: FC<InfoCardProps> = ({ icon: Icon, title, fields, order }) => (
 
         return (
           <div key={String(key)}>
-            <p className="text-xs text-gray-500 uppercase">{label}</p>
+            <p className="text-xs text-gray-500 uppercase tracking-wide">{label}</p>
             <p className="text-base font-semibold text-gray-900">{displayValue}</p>
           </div>
         );
@@ -70,14 +56,14 @@ export default function OrderDetails() {
 
     const fetchOrder = async () => {
       try {
-        const url = process.env.NEXT_PUBLIC_API_URL
-
+        const url = process.env.NEXT_PUBLIC_API_URL;
         setIsLoading(true);
-        const response = await axios.get(`${url}/dashboard/getOrderById/${id}`);
-        console.log("orderby-id->url", `${url}/dashboard/getOrderById/${id}`);
 
+        const response = await axios.get(`${url}/dashboard/getOrderById/${id}`);
         let data = response.data;
+
         if (Array.isArray(data)) data = data[0];
+
         setOrder(data as OrderType);
       } catch (error) {
         console.error("Error fetching Order:", error);
@@ -92,7 +78,7 @@ export default function OrderDetails() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-indigo-500 border-t-transparent"></div>
       </div>
     );
   }
@@ -106,29 +92,32 @@ export default function OrderDetails() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fff]">
-      <div className="w-full px-2 pb-12">
+    <div className="min-h-screen  p-4">
+      <div className="w-full pb-12">
+
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
-          <h1 className="text-3xl font-bold">Order Details</h1>
+          <h1 className="text-4xl font-bold bg-black bg-clip-text text-transparent">
+            Order Detail
+          </h1>
+
           <Button
             onClick={() => router.back()}
-            className="flex cursor-pointer items-center gap-2 hover:bg-gray-300 hover:text-gray-800 mb-4"
+            className="flex cursor-pointer items-center gap-2 bg-gradient-to-r from-gray-700 to-gray-900 text-white hover:opacity-80 mb-4"
           >
             <ArrowLeft className="w-5 h-5" />
             Back
           </Button>
         </div>
 
-        {/* Accordion Wrapper */}
-        <Accordion type="single" collapsible className="space-y-4 mb-8">
+        <Accordion type="single" collapsible className="space-y-5 mb-10">
           <AccordionItem value="item-1">
-            <AccordionTrigger className="text-lg font-semibold">
+            <AccordionTrigger className="text-lg font-semibold rounded-md px-4 bg-white shadow hover:bg-indigo-50">
               <div className="flex items-center gap-2">
-                <Package className="w-5 h-5 text-gray-700" /> General Information
+                <Package className="w-5 h-5 text-indigo-700" /> General Information
               </div>
             </AccordionTrigger>
-            <AccordionContent>
+            <AccordionContent className="mt-3">
               <InfoCard
                 icon={Package}
                 title="General Information"
@@ -148,12 +137,12 @@ export default function OrderDetails() {
           </AccordionItem>
 
           <AccordionItem value="item-2">
-            <AccordionTrigger className="text-lg font-semibold">
+            <AccordionTrigger className="text-lg font-semibold rounded-md px-4 bg-white shadow hover:bg-indigo-50">
               <div className="flex items-center gap-2">
-                <User className="w-5 h-5 text-gray-700" /> Customer Information
+                <User className="w-5 h-5 text-indigo-700" /> Customer Information
               </div>
             </AccordionTrigger>
-            <AccordionContent>
+            <AccordionContent className="mt-3">
               <InfoCard
                 icon={User}
                 title="Customer Information"
@@ -169,12 +158,12 @@ export default function OrderDetails() {
           </AccordionItem>
 
           <AccordionItem value="item-3">
-            <AccordionTrigger className="text-lg font-semibold">
+            <AccordionTrigger className="text-lg font-semibold rounded-md px-4 bg-white shadow hover:bg-indigo-50">
               <div className="flex items-center gap-2">
-                <CreditCard className="w-5 h-5 text-gray-700" /> Payment Summary
+                <CreditCard className="w-5 h-5 text-indigo-700" /> Payment Summary
               </div>
             </AccordionTrigger>
-            <AccordionContent>
+            <AccordionContent className="mt-3">
               <InfoCard
                 icon={CreditCard}
                 title="Payment Summary"
@@ -191,12 +180,12 @@ export default function OrderDetails() {
           </AccordionItem>
 
           <AccordionItem value="item-4">
-            <AccordionTrigger className="text-lg font-semibold">
+            <AccordionTrigger className="text-lg font-semibold rounded-md px-4 bg-white shadow hover:bg-indigo-50">
               <div className="flex items-center gap-2">
-                <Monitor className="w-5 h-5 text-gray-700" /> POS Information
+                <Monitor className="w-5 h-5 text-indigo-700" /> POS Information
               </div>
             </AccordionTrigger>
-            <AccordionContent>
+            <AccordionContent className="mt-3">
               <InfoCard
                 icon={Monitor}
                 title="POS Information"
@@ -213,12 +202,12 @@ export default function OrderDetails() {
           </AccordionItem>
 
           <AccordionItem value="item-5">
-            <AccordionTrigger className="text-lg font-semibold">
+            <AccordionTrigger className="text-lg font-semibold rounded-md px-4 bg-white shadow hover:bg-indigo-50">
               <div className="flex items-center gap-2">
-                <Plug className="w-5 h-5 text-gray-700" /> Integration Details
+                <Plug className="w-5 h-5 text-indigo-700" /> Integration Details
               </div>
             </AccordionTrigger>
-            <AccordionContent>
+            <AccordionContent className="mt-3">
               <InfoCard
                 icon={Plug}
                 title="Integration Details"
@@ -233,9 +222,9 @@ export default function OrderDetails() {
         </Accordion>
 
         {/* ---------------- ORDER ITEMS TABLE ---------------- */}
-        <div className="bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
-          <div className="flex items-center gap-3 px-6 py-4 border-b bg-gray-50">
-            <div className="p-2 bg-gray-900 rounded-lg">
+        <div className="rounded-xl border border-gray-200 shadow-xl bg-white overflow-hidden">
+          <div className="flex items-center gap-3 px-6 py-4 border-b bg-gradient-to-r from-black to-gray-500 text-white">
+            <div className="p-2 bg-white/20 rounded-lg">
               <ShoppingCart className="w-5 h-5 text-white" />
             </div>
             <h2 className="text-lg font-semibold">Order Items</h2>
@@ -243,7 +232,7 @@ export default function OrderDetails() {
 
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-gray-100">
+              <thead className="bg-[#eef3ff]">
                 <tr>
                   {[
                     "#",
@@ -264,44 +253,54 @@ export default function OrderDetails() {
                   ].map((h) => (
                     <th
                       key={h}
-                      className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase"
+                      className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wide"
                     >
                       {h}
                     </th>
                   ))}
                 </tr>
               </thead>
+
               <tbody className="divide-y">
                 {order.items.map((item, index) => (
-                  <tr key={index} className="hover:bg-gray-50">
+                  <tr key={index} className="hover:bg-indigo-50">
                     <td className="px-6 py-4">{index + 1}</td>
                     <td className="px-6 py-4 text-center">{item.item_merchant_id}</td>
                     <td className="px-6 py-4">{item.item_name}</td>
                     <td className="px-6 py-4 text-center">{item.item_quantity}</td>
-                    <td className="px-6 py-4 text-right">₹{item.item_price}</td>
-                    <td className="px-6 py-4 text-right text-red-600">
+                    <td className="px-6 py-4 text-center">₹{item.item_price}</td>
+
+                    <td className="px-6 py-4 text-center text-red-600">
                       {item.item_discount > 0 ? `-₹${item.item_discount.toFixed(2)}` : "-"}
                     </td>
-                    <td className="px-6 py-4 text-right">
+
+                    <td className="px-6 py-4 text-center">
                       {item.cgst_rate > 0 ? item.cgst_rate + "%" : "-"}
                     </td>
-                    <td className="px-6 py-4 text-right">
+
+                    <td className="px-6 py-4 text-center">
                       {item.cgst_amount > 0 ? `₹${item.cgst_amount.toFixed(2)}` : "-"}
                     </td>
-                    <td className="px-6 py-4 text-right">
+
+                    <td className="px-6 py-4 text-center">
                       {item.sgst_rate > 0 ? item.sgst_rate + "%" : "-"}
                     </td>
-                    <td className="px-6 py-4 text-right">
+
+                    <td className="px-6 py-4 text-center">
                       {item.sgst_amount > 0 ? `₹${item.sgst_amount.toFixed(2)}` : "-"}
                     </td>
-                    <td className="px-6 py-4 text-right font-bold">
-                      ₹{item.item_total_with_tax > 0 ? item.item_total_with_tax : "-"}
+
+                    <td className="px-6 py-4 text-center font-bold text-indigo-700">
+                      {item.item_total_with_tax > 0 ? '₹' + item.item_total_with_tax : "-"}
                     </td>
+
                     <td className="px-6 py-4 text-center">{item.indent}</td>
                     <td className="px-6 py-4 text-center">{item.line_no}</td>
+
                     <td className="px-6 py-4 text-center">
                       {item.parent_line_no === null ? "-" : item.parent_line_no}
                     </td>
+
                     <td className="px-6 py-4 text-center">
                       {item.items_options_to_add_group_is_variant}
                     </td>
@@ -311,6 +310,7 @@ export default function OrderDetails() {
             </table>
           </div>
         </div>
+
       </div>
     </div>
   );

@@ -59,15 +59,10 @@ function ItemCard() {
           fetch(`${url}/dashboard/posFetchedOrders`).then(r => r.json()),
           fetch(`${url}/dashboard/posDeliveredOrders`).then(r => r.json())
         ])
-        console.log("noOfOrders", `${url}/dashboard/noOfOrders`);
-        console.log("posFetchedOrders", `${url}/dashboard/posFetchedOrders`);
-        console.log("posDeliveredOrders", `${url}/dashboard/posDeliveredOrders`);
-
-
-
         setOrderDetail(ordersRes)
         setPOSFetchedOrders(fetchedRes)
         setPOSDeliveredOrders(deliveredRes)
+        
       } catch (error) {
         console.error('Error fetching data:', error)
       } finally {

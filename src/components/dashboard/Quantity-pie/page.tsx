@@ -32,12 +32,9 @@ function QuantityPieData() {
           axios.get(`${url}/dashboard/pie-chart/today/todaysTop10Qty`),
           axios.get(`${url}/dashboard/pie-chart/monthly/thisMonthTodaysTop10Qty`)
         ]);
-        console.log("todaysTop10Qty", `${url}/dashboard/pie-chart/today/todaysTop10Qty`);
-        console.log("thisMonthTodaysTop10Qty", `${url}/dashboard/pie-chart/monthly/thisMonthTodaysTop10Qty`);
-
-
         setTotalQty(resQty.data);
         setTotalQtyThisMonth(resQtyThisMonth.data);
+        
       } catch (error) {
         console.error("Error fetching chart data:", error);
       } finally {

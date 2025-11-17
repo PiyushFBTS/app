@@ -16,8 +16,6 @@ export default function OrderList() {
 
       try {
         const response = await axios.get(`${url}/dashboard/orderList`);
-        console.log("orderlist->url", `${url}/dashboard/orderList`);
-
         setOrderDetail(response.data[0].get_order_list_as_json);
       } catch (error) {
         console.error("Error fetching Order Data:", error);

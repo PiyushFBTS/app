@@ -13,9 +13,8 @@ export default function UserDataTable() {
   const fetchUserData = async () => {
     try {
       const response = await axios.get(`${url}/userRole`)
-      console.log("urserRole->url", `${url}/userRole`);
-
       setUserData(response.data)
+      
     } catch (error) {
       console.error("error fetch in user", error);
     }
