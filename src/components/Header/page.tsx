@@ -43,7 +43,7 @@ export function Header() {
         <div className="flex items-center gap-2 md:gap-4">
           {
 
-            ! isMobile && <div className="space-y-1">
+            !isMobile && <div className="space-y-1">
               <p>
                 <strong> Hello ,</strong> {user.first_name} {user.last_name}
               </p>
@@ -52,55 +52,64 @@ export function Header() {
 
 
           {/* User Management - Hidden on mobile, shown on tablet+ */}
-          {
-            user.user_code === 1 && <div className="">
+          {user.user_code === 1 && (
+            <div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="gap-2">
-                    <UserRoundPlus className="h-4 w-4" />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="gap-2 hover:bg-amber-100 dark:hover:bg-slate-700 text-amber-900 dark:text-amber-100 font-medium transition-all hover:shadow-md"
+                  >
+                    <UserRoundPlus className="h-4 w-4 text-orange-600 dark:text-orange-400" />
                     <span className="hidden lg:inline">User</span>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
-                  <DropdownMenuItem>
+                <DropdownMenuContent className="w-56 bg-white dark:bg-slate-800 border-amber-200 dark:border-slate-600" align="end" forceMount>
+                  <DropdownMenuItem className="hover:bg-amber-50 dark:hover:bg-slate-700">
                     <Link href={`/user`} className="flex w-full">
-                      <User className="mr-2 h-4 w-4" />
+                      <User className="mr-2 h-4 w-4 text-orange-600 dark:text-orange-400" />
                       <span>User Data</span>
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem className="hover:bg-amber-50 dark:hover:bg-slate-700">
                     <Link href={`/user/createUser`} className="flex w-full">
-                      <UserPlus className="mr-2 h-4 w-4" />
+                      <UserPlus className="mr-2 h-4 w-4 text-orange-600 dark:text-orange-400" />
                       <span>Add User</span>
                     </Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-          }
+          )}
 
 
           {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                <Avatar className="h-8 w-8">
-                  {/* <AvatarImage src="/placeholder.svg" alt="User" /> */}
-                  <AvatarFallback>
-                    <User className="h-4 w-4" />
+              <Button
+                variant="ghost"
+                className="relative h-9 w-9 rounded-full hover:shadow-lg transition-all bg-gradient-to-br from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600"
+              >
+                <Avatar className="h-9 w-9 border-2 border-white dark:border-slate-700">
+                  <AvatarFallback className="bg-gradient-to-br from-amber-100 to-orange-100 dark:from-slate-700 dark:to-slate-600">
+                    <User className="h-4 w-4 text-orange-700 dark:text-orange-300" />
                   </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
+            <DropdownMenuContent className="w-56 bg-white dark:bg-slate-800 border-amber-200 dark:border-slate-600" align="end" forceMount>
               <Link href="/profile">
-                <DropdownMenuItem>
-                  <User className="mr-2 h-4 w-4" />
+                <DropdownMenuItem className="hover:bg-amber-50 dark:hover:bg-slate-700">
+                  <User className="mr-2 h-4 w-4 text-orange-600 dark:text-orange-400" />
                   <span>Profile</span>
                 </DropdownMenuItem>
               </Link>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout}>
+              <DropdownMenuSeparator className="bg-amber-200 dark:bg-slate-600" />
+              <DropdownMenuItem
+                onClick={handleLogout}
+                className="hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400"
+              >
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Log out</span>
               </DropdownMenuItem>

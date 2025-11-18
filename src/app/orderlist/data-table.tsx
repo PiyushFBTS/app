@@ -53,13 +53,13 @@ export function OrderDetailTable<TData extends OrderDeatilList, TValue>({ column
     return (
         <div className="flex flex-col h-full justify-between min-h-[calc(100vh-120px)] gap-6 pb-6  md:pb-0">
             {/* Header Section */}
-            <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-xl p-4 text-white shadow-lg">
+            <div className="bg-gradient-to-r from-black to-gray-300 rounded-xl p-4 text-white shadow-lg">
                 <div className="flex flex-row justify-between">
 
-                    <h1 className="text-xl md:text-4xl font-bold content-center">Order Details</h1>
+                    <h1 className="text-xl md:text-4xl font-bold content-center">Order List</h1>
 
                     <div className="flex gap-3">
-                        <Button variant="secondary" className="bg-white/10 hover:bg-white/20 text-white border-white/20 cursor-pointer" onClick={() => window.location.reload()}>
+                        <Button variant="secondary" className="bg-black hover:bg-black/20 text-white cursor-pointer" onClick={() => window.location.reload()}>
                             <RefreshCw className="h-4 w-4 mr-2" />
                             {!isMobile && 'Refresh'}
                         </Button>

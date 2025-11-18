@@ -1,33 +1,10 @@
 "use client"
 
-import {
-  BookOpen,
-  Calendar,
-  GraduationCap,
-  Home,
-  MessageSquare,
-  Settings,
-  Users,
-  FileText,
-  Trophy,
-  Clock,
-  MapPin,
-} from "lucide-react"
+import { BookOpen, Calendar, GraduationCap, Home, MessageSquare, Settings, Users, FileText, Trophy, Clock, MapPin } from "lucide-react"
 
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarRail,
-} from "@/components/ui/sidebar"
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarRail } from "@/components/ui/sidebar"
 import { Separator } from "@/components/ui/separator"
+import { Badge } from "../ui/badge"
 
 // Navigation data
 const navigationData = {
@@ -44,8 +21,8 @@ const navigationData = {
   //   { title: "Schedule", url: "/schedule", icon: Clock },
   // ],
   communication: [
-    { title: "Report 1", url: "/messages", icon: MessageSquare },
-    { title: "Report 2", url: "/announcements", icon: FileText },
+    { title: "Report 1", url: "/messages", icon: MessageSquare, comingSoon: true },
+    { title: "Report 2", url: "/announcements", icon: FileText, comingSoon: true },
   ],
   // facilities: [
   //   { title: "Campus Map", url: "/campus", icon: MapPin },
@@ -92,7 +69,7 @@ export function SchoolSidebar() {
 
         <Separator className="mx-2 my-2" />
 
-        
+
         {/* Communication */}
         <SidebarGroup>
           <SidebarGroupLabel>Report</SidebarGroupLabel>
@@ -100,10 +77,19 @@ export function SchoolSidebar() {
             <SidebarMenu>
               {navigationData.communication.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild tooltip={item.title}>
-                    <a href={item.url} className="flex items-center gap-2">
+                  <SidebarMenuButton
+                    asChild
+                    tooltip={`${item.title} (Coming Soon)`}
+                    className="relative hover:bg-purple-50 hover:text-purple-800 transition-colors"
+                  >
+                    <a href={item.url} className="flex items-center gap-2 opacity-60 cursor-not-allowed">
                       <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
+                      {item.comingSoon && (
+                        <Badge variant="secondary" className="text-[10px] ml-auto bg-sky-400 text-black">
+                          Coming Soon
+                        </Badge>
+                      )}
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -133,9 +119,6 @@ export function SchoolSidebar() {
           </SidebarGroupContent>
         </SidebarGroup> */}
       </SidebarContent>
-
-      
-
       <SidebarRail />
     </Sidebar>
   )
