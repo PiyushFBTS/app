@@ -46,9 +46,6 @@ function AmountBarChart() {
           axios.get(`${url}/dashboard/pie-chart/today/todaysTop10Amount`),
           axios.get(`${url}/dashboard/pie-chart/monthly/thisMonthTodaysTop10Amount`)
         ]);
-        console.log("todaysTop10Amount",`${url}pi/dashboard/pie-chart/today/todaysTop10Amount`);
-        console.log("thisMonthTodaysTop10Amount",`${url}/dashboard/pie-chart/monthly/thisMonthTodaysTop10Amount`);
-        
 
         setTotalAmount(resAmount.data);
         setTotalAmountThisMonth(resAmountThisMonth.data);
